@@ -19,6 +19,8 @@
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
+
+                <a href="{{ route('cadastro.index') }}">Ir para Usuários</a>
             </form>
         </div>
     </div>

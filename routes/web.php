@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LoginController::class, 'index']);
+Route::get('/cadastro', [LoginController::class, 'signUp'])->name('cadastro.index');
 
-Route::get('/login', function () {
-    return view('login');
-});
+
+Route::post('/cadastrando', [LoginController::class, 'createUser']);
+
