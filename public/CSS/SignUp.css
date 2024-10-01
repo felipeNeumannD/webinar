@@ -1,71 +1,50 @@
-.main {
+body {
+    background: linear-gradient(to right, #67B26F, #4ca2cd);
+    height: 100vh;
+    margin: 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    width: 60%;
-    margin: 50px auto;
-    background-color: #f0f8ff; 
-    padding: 20px;
-    border-radius: 10px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    align-items: center;
+    font-family: 'Arial', sans-serif;
 }
 
-
-.form-group {
-    margin-bottom: 20px;
+.main1 {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.main {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #343a40;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
 
 label {
-    font-size: 1.1em;
     color: #495057;
 }
 
-
-.form-control {
-    border: 1px solid #b0e0e6; 
-    border-radius: 5px;
+input.form-control {
+    font-size: 1rem;
     padding: 10px;
-    font-size: 1em;
 }
 
-
-.form-control:focus {
-    border-color: #87ceeb; 
-    box-shadow: 0 0 5px rgba(135, 206, 235, 0.5);
-}
-
-
-::placeholder {
-    color: #6c757d;
-    opacity: 0.7;
-}
-
-
-.form-group label {
-    margin-bottom: 5px;
-}
-
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 100%;
-}
-
-button[type="submit"] {
-    background-color: #0d0563; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
+button.btn-primary {
+    padding: 10px;
+    font-size: 1.1rem;
+    background-color: #007bff;
+    border-color: #007bff;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-    background-color: #00bfff;
+button.btn-primary:hover {
+    background-color: #0056b3;
 }

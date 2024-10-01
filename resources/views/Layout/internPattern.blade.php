@@ -4,6 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #6ab1d7 0%, #33d9b2 100%);
+            height: 100%;
+            margin: 0;
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>@yield('title')</title>
@@ -21,16 +28,17 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="mainView">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Seus Cursos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Configurações</a>
+                            <a class="nav-link" href="changeUser">Configurações</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Máquinas
+                                disponíveis</a>
                         </li>
                     </ul>
                 </div>
