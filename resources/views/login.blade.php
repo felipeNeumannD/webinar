@@ -5,7 +5,7 @@
     <div class="col-md-4">
         <div id="login" name="loginInterface" class="login_formatter p-4 rounded shadow-lg bg-light">
             <h1 class="text-center mb-4">Seja Bem Vindo</h1>
-            <form>
+            <form action="/login" method="GET">
                 <div id="emailInsert" name="insertEmail" class="form-group">
                     <label for="Email" class="font-weight-bold">Email:</label>
                     <input type="email" class="form-control" name="Email" id="Email" placeholder="Digite seu email">
@@ -20,7 +20,7 @@
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
 
-                <a href="{{ route('cadastro.index') }}">Ir para Usuários</a>
+                <a href="{{ route('cadastro.index') }}">Crie seu usuário</a>
             </form>
         </div>
     </div>
