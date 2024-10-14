@@ -2,7 +2,7 @@
 @section('content')
 
 <div class="main1 d-flex justify-content-center align-items-center vh-100">
-    <form action="/updateUser" method="POST" class="w-100" style="max-width: 500px;">
+    <form action="/user/updateUser" method="POST" class="w-100" style="max-width: 500px;">
         @csrf
         @method('PUT')
         <div class="main p-4 bg-light rounded shadow">

@@ -4,7 +4,7 @@
 @section('content')
 
 <div class="main1 d-flex justify-content-center align-items-center vh-100">
-    <form action="/cadastrando" method="POST" class="w-100" style="max-width: 500px;">
+    <form action="/user/cadastrando" method="POST" class="w-100" style="max-width: 500px;">
         @csrf
         <div class="main p-4 bg-light rounded shadow">
             <h2 class="text-center mb-4">Criar Conta</h2>

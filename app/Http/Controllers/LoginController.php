@@ -41,7 +41,7 @@ class LoginController extends Controller
 
             if (Hash::check($request->Password, $user->password)) {
                 session(['user' => $user]);
-                return redirect()->intended('/mainView');
+                return view("mainView");
             } else {
                 return redirect("/");
             }
@@ -50,21 +50,22 @@ class LoginController extends Controller
         }
     }
 
-    public function updateUser(Request $request){
+    public function updateUser(Request $request)
+    {
         $user = session('user');
-        if($user instanceof Users) {
+        if ($user instanceof Users) {
             $user = Users::where('id', $user->id)->first();
-            if($request->Password == $request->Confirm) {
+            if ($request->Password == $request->Confirm) {
                 $user->name = $request->Name;
                 $user->email = $request->Email;
                 $user->password = Hash::make($request->Password);
                 $user->CompanyId = $request->Identification;
 
                 $user->save();
-                return redirect('/mainView');
+                return view("mainView");
             }
         }
-        
+
     }
 
     public function changeUser()
@@ -78,9 +79,17 @@ class LoginController extends Controller
 
             return view('UserPages.changeUser', compact('name', 'mail', 'companyId'));
         } else {
-            return redirect("/mainView");
+            return view("mainView");
         }
     }
 
-    
+
+    public function searchUser(Request $request)
+    {
+        $query = $request->get('query');
+        $users = Users::where('name', 'like', "%{$query}%")->get(['name', 'email']);
+
+        return response()->json($users);
+    }
+
 }

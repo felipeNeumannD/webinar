@@ -28,13 +28,16 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="mainView">Home</a>
+                            <a class="nav-link active" aria-current="page" href="{{ route('mainView')}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Seus Cursos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="changeUser">Configurações</a>
+                            <a class="nav-link" href="{{ route('changeUser')}}">Configurações</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lines')}}">Linhas de produção</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Máquinas
