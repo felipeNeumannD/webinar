@@ -19,7 +19,15 @@ Route::prefix('user')->group(function () {
 Route::prefix('line')->group(function () {
     Route::get('/', [LineController::class, 'index'])->name('lines');
     Route::get('/cadastro', [LineController::class, 'create'])->name('line.cadastro');
+    Route::get('/description', [LineController::class, 'showDescription'])->name('line.description');
     Route::post('/lineRegister', [LineController::class, 'lineRegister'])->name('line.register');
+});
+
+Route::prefix('machine')->group(function () {
+    Route::get('/', [LineController::class, 'index'])->name('machines');
+    Route::get('/cadastro', [LineController::class, 'create'])->name('machine.cadastro');
+    Route::get('/description', [LineController::class, 'showDescription'])->name('machine.description');
+    Route::post('/machineRegister', [LineController::class, 'lineRegister'])->name('machine.register');
 });
 
 

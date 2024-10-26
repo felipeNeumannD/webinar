@@ -8,19 +8,22 @@ use App\Models\Users;
 
 class LineController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $lines = $this->lineUserList();
-        return view("LinePages/mainLinePage", ["userLines"=> $lines]);
+        return view("LinePages/mainLinePage", ["userLines" => $lines]);
     }
 
-    public function create() {
+    public function create()
+    {
         return redirect()->route("LinePages.LineRegister");
     }
 
-    public function lineRegister(Request $request) {
+    public function lineRegister(Request $request)
+    {
         $email = $request->selectedUserMail;
- 
-        if(!empty($email)) {
+
+        if (!empty($email)) {
             $userid = Users::where("email", $email)->first()->id;
             $line = new LineModel;
 
@@ -34,13 +37,28 @@ class LineController extends Controller
     }
 
 
-    public function lineUserList() {
+    public function lineUserList()
+    {
         $user = session('user');
-        
+
         if ($user instanceof Users) {
             $lines = LineModel::where('admin_id', $user->id)->get();
             return $lines;
         }
         return collect();
     }
+
+    public function showDescription(Request $request)
+    {
+        $lineId = $request->query('line_id');
+
+        $line = LineModel::find($lineId);
+
+        if ($line) {
+            return view('LinePages.LineDescription', compact('line'));
+        }
+
+        return redirect()->back()->with('error', 'Linha não encontrada');
+    }
+
 }
