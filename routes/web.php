@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\LineController;
+use App\Http\Controllers\MachineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
@@ -24,10 +26,17 @@ Route::prefix('line')->group(function () {
 });
 
 Route::prefix('machine')->group(function () {
-    Route::get('/', [LineController::class, 'index'])->name('machines');
-    Route::get('/cadastro', [LineController::class, 'create'])->name('machine.cadastro');
-    Route::get('/description', [LineController::class, 'showDescription'])->name('machine.description');
-    Route::post('/machineRegister', [LineController::class, 'lineRegister'])->name('machine.register');
+    Route::get('/', [MachineController::class, 'index'])->name('machines');
+    Route::get('/cadastro', [MachineController::class, 'create'])->name('machine.create');
+    Route::get('/description', [MachineController::class, 'showDescription'])->name('machine.description');
+    Route::post('/machineRegister', [MachineController::class, 'store'])->name('machine.store');
+});
+
+Route::prefix('course')->group(function () {
+    Route::get('/', [CourseController::class, 'index'])->name('course');
+    Route::get('/cadastro', [CourseController::class, 'create'])->name('course.create');
+    Route::get('/description', [CourseController::class, 'showDescription'])->name('course.description');
+    Route::post('/machineRegister', [CourseController::class, 'store'])->name('course.store');
 });
 
 

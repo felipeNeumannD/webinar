@@ -11,4 +11,11 @@ class MachineModel extends Model
 
     protected $table = 'machines';
 
+    public function saveMachine( $nome, $descricao, $combobox ) {
+        $this->name = $nome;
+        $this->description = $descricao;
+        $this->line_id = $combobox;
+        $this-> save();
+    }
+
 }

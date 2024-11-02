@@ -40,8 +40,7 @@
                             <a class="nav-link" href="{{ route('lines')}}">Linhas de produção</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Máquinas
-                                disponíveis</a>
+                            <a class="nav-link" href="{{ route('machines')}}">Máquinas disponíveis</a>
                         </li>
                     </ul>
                 </div>

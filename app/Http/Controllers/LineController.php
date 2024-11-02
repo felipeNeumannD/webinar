@@ -16,7 +16,7 @@ class LineController extends Controller
 
     public function create()
     {
-        return redirect()->route("LinePages.LineRegister");
+        return view("LinePages.LineRegister");
     }
 
     public function lineRegister(Request $request)
