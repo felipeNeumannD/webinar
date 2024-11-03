@@ -36,7 +36,7 @@ Route::prefix('course')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('course');
     Route::get('/cadastro', [CourseController::class, 'create'])->name('course.create');
     Route::get('/description', [CourseController::class, 'showDescription'])->name('course.description');
-    Route::post('/machineRegister', [CourseController::class, 'store'])->name('course.store');
+    Route::post('/courseRegister', [CourseController::class, 'store'])->name('course.store');
 });
 
 

@@ -10,4 +10,10 @@ class Users extends Model
     use HasFactory;
 
     protected $table = 'user';
+
+
+    public static function getId( $email )
+    {
+        return Users::where("email", $email)->first()->id;
+    }
 }

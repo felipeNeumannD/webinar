@@ -13,7 +13,8 @@ class MachineController extends Controller
 {
     public function index()
     {
-        return view("MachinePages/mainMachinePage");
+        $machines = $this->showMachines();
+        return view("MachinePages/mainMachinePage", ["machines" => $machines]);
     }
 
     public function create( Request $request ){
@@ -31,7 +32,7 @@ class MachineController extends Controller
             $model = new LineModel();
             $lineName = $model->lineId( $request->lineList );
 
-            $userid = Users::where("email", $email)->first()->id;
+            $userid = Users::getId($email);
 
             $machine = new MachineModel();
             $machineUser = new UserMachineModel();
@@ -40,6 +41,12 @@ class MachineController extends Controller
             $machineUser->saveMachineUser($userid,$machine->getKey(), false);
         }
         return redirect()->back();
+    }
+
+    public function showMachines()
+    {
+        $machinesList = MachineModel::all();
+        return $machinesList;
     }
 
 }
