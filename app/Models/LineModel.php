@@ -20,4 +20,18 @@ class LineModel extends Model
         $line = $this::where('name', $name)->first()->getKey();
         return $line;
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($line) {
+            $line->machines()->delete();
+        });
+    }
+
+    public function machines()
+    {
+        return $this->hasMany(MachineModel::class, 'line_id', 'id');
+    }
 }

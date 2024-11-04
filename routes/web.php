@@ -21,8 +21,11 @@ Route::prefix('user')->group(function () {
 Route::prefix('line')->group(function () {
     Route::get('/', [LineController::class, 'index'])->name('lines');
     Route::get('/cadastro', [LineController::class, 'create'])->name('line.cadastro');
-    Route::get('/description', [LineController::class, 'showDescription'])->name('line.description');
+    Route::get('/{id}/description', [LineController::class, 'showDescription'])->name('line.description');
     Route::post('/lineRegister', [LineController::class, 'lineRegister'])->name('line.register');
+    Route::get('/{id}/edit', [LineController::class, 'edit'])->name('lines.edit');
+    Route::put('/{id}', [LineController::class, 'update'])->name('lines.update');
+    Route::delete('/{id}', [LineController::class, 'destroy'])->name('lines.destroy');
 });
 
 Route::prefix('machine')->group(function () {
@@ -30,6 +33,9 @@ Route::prefix('machine')->group(function () {
     Route::get('/cadastro', [MachineController::class, 'create'])->name('machine.create');
     Route::get('/description', [MachineController::class, 'showDescription'])->name('machine.description');
     Route::post('/machineRegister', [MachineController::class, 'store'])->name('machine.store');
+    Route::get('/{id}/edit', [MachineController::class, 'edit'])->name('machines.edit');
+    Route::put('/{id}', [MachineController::class, 'update'])->name('machines.update');
+    Route::delete('/{id}', [MachineController::class, 'destroy'])->name('machines.destroy');
 });
 
 Route::prefix('course')->group(function () {

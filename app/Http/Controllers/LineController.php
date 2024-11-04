@@ -61,4 +61,33 @@ class LineController extends Controller
         return redirect()->back()->with('error', 'Linha não encontrada');
     }
 
+    public function edit($id)
+    {
+        $line = LineModel::findOrFail($id);
+        return view('LinePages.editLine', compact('line'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $line = LineModel::findOrFail($id);
+        $line->name = $request->input('name');
+        $line->description = $request->input('description');
+        $line->save();
+    
+        return redirect()->route('lines')->with('success', 'Line updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $line = LineModel::findOrFail($id);
+    
+        foreach ($line->machines as $machine) {
+            $machine->delete();
+        }
+    
+        $line->delete();
+    
+        return redirect()->route('lines')->with('success', 'Line deleted successfully');
+    }
+
 }
