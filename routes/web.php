@@ -43,6 +43,10 @@ Route::prefix('course')->group(function () {
     Route::get('/cadastro', [CourseController::class, 'create'])->name('course.create');
     Route::get('/description', [CourseController::class, 'showDescription'])->name('course.description');
     Route::post('/courseRegister', [CourseController::class, 'store'])->name('course.store');
+    Route::post('/upload-video', [CourseController::class, 'storeVideo'])->name('upload.video');
+    Route::get('/video', [CourseController::class, 'getRegisterVideoPage'])->name('RegisterVideoPage');
+    Route::get('/show_video', [CourseController::class, 'getShowVideo'])->name('video.show');
+    
 });
 
 

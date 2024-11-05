@@ -25,6 +25,16 @@
                 Cadastrar Novo
             </a>
         </div>
+        <div class="text-end mt-4">
+            <a href="{{ route("RegisterVideoPage") }}" class="btn btn-secondary btn-sm">
+                Cadastrar Novo Video
+            </a>
+        </div>
+        <div class="text-end mt-4">
+            <a href="{{ route("video.show") }}" class="btn btn-secondary btn-sm">
+                Existente
+            </a>
+        </div>
     </div>
 </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CourseModel;
 use App\Models\UserCourseModel;
+use App\Models\Video;
 use App\Models\Users;
 
 class CourseController extends Controller
@@ -23,6 +24,13 @@ class CourseController extends Controller
     public function getCoursesByAccess()
     {
         return CourseModel::all();
+    }
+
+    public function getShowVideo()
+    {
+        $videos = Video::all();
+
+        return view('CoursePages.video', compact('videos'));
     }
 
     public function store( Request $request )
@@ -45,6 +53,32 @@ class CourseController extends Controller
 
         return redirect('/main');
     }
+
+    public function getRegisterVideoPage()
+    {
+        return view('CoursePages/RegisterVideo');
+    }
+
+    public function storeVideo( Request $request )
+    {
+        $request->validate([
+            'video' => 'required|mimes:mp4,mov,ogg,qt|max:20000',
+        ]);
+
+        if ($request->hasFile('video')) {
+            $videoPath = $request->file('video')->store('videos', 'public');
+
+            $video = new Video();
+            $video->course_id = "2";
+            $video->description = "Teste";
+            $video->video = $videoPath;
+            $video->save();
+
+            return redirect("")->route("RegisterVideoPage");
+        }
+
+    }
+    
 
 
 }
