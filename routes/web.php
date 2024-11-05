@@ -31,7 +31,7 @@ Route::prefix('line')->group(function () {
 Route::prefix('machine')->group(function () {
     Route::get('/', [MachineController::class, 'index'])->name('machines');
     Route::get('/cadastro', [MachineController::class, 'create'])->name('machine.create');
-    Route::get('/description', [MachineController::class, 'showDescription'])->name('machine.description');
+    Route::get('/{id}/description', [MachineController::class, 'showDescription'])->name('machine.description');
     Route::post('/machineRegister', [MachineController::class, 'store'])->name('machine.store');
     Route::get('/{id}/edit', [MachineController::class, 'edit'])->name('machines.edit');
     Route::put('/{id}', [MachineController::class, 'update'])->name('machines.update');

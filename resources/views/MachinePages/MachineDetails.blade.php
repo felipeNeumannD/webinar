@@ -6,27 +6,29 @@
         style="width: 600px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
         <h2 class="text-center">Detalhes da Máquina</h2>
 
-        <div class="mt-3">
-            <h5>Descrição da máquina:</h5>
-            
+        <div class="container">
+            <p><strong>Nome:</strong> {{ $machine->name }}</p>
+            <p><strong>Descrição:</strong> {{ $machine->description }}</p>
+            <a href="{{ route('machines') }}" class="btn btn-secondary">Voltar para Lista de Máquinas</a>
         </div>
 
         <div class="mt-3">
             <h5>Cursos da máquina:</h5>
             <table class="table">
                 <tbody>
-                    @forelse ($machines as $machine)
+                    @forelse ($machine->courses as $course)
                         <tr>
-                            <td>{{$machine->name}}</td>
+                            <td>{{ $course->name }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center">Nenhuma linha encontrada</td>
+                            <td colspan="3" class="text-center">Nenhum curso encontrado</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
         <div class="text-end mt-4">
             <a href="{{ route('machine.create') }}" class="btn btn-secondary btn-sm">
                 Cadastrar Novo

@@ -48,17 +48,10 @@ class LineController extends Controller
         return collect();
     }
 
-    public function showDescription(Request $request)
+    public function showDescription($id)
     {
-        $lineId = $request->query('line_id');
-
-        $line = LineModel::find($lineId);
-
-        if ($line) {
-            return view('LinePages.LineDescription', compact('line'));
-        }
-
-        return redirect()->back()->with('error', 'Linha não encontrada');
+        $line = LineModel::with('machines')->findOrFail($id);
+        return view('LinePages.LineDescription', compact('line'));
     }
 
     public function edit($id)

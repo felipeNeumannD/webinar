@@ -49,6 +49,13 @@ class MachineController extends Controller
         return $machinesList;
     }
 
+    public function showDescription($id)
+    {
+        $machine = MachineModel::with('courses')->findOrFail($id);
+    
+        return view('MachinePages.MachineDetails', compact('machine'));
+    }
+
     public function edit($id)
     {
         $machine = MachineModel::findOrFail($id);
