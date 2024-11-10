@@ -8,6 +8,12 @@ use App\Models\Users;
 
 class LineController extends Controller
 {
+
+    public function returnInitialPage(){
+        return redirect()->route("lines");
+    }
+
+
     public function index()
     {
         $lines = $this->lineUserList();
@@ -33,7 +39,7 @@ class LineController extends Controller
 
             $line->save();
         }
-        return redirect()->back();
+        $this->returnInitialPage();
     }
 
 
@@ -67,20 +73,16 @@ class LineController extends Controller
         $line->description = $request->input('description');
         $line->save();
     
-        return redirect()->route('lines')->with('success', 'Line updated successfully');
+        $this->returnInitialPage();
     }
 
     public function destroy($id)
     {
         $line = LineModel::findOrFail($id);
     
-        foreach ($line->machines as $machine) {
-            $machine->delete();
-        }
+        $line->forceDelete();
     
-        $line->delete();
-    
-        return redirect()->route('lines')->with('success', 'Line deleted successfully');
+        $this->returnInitialPage();
     }
 
 }

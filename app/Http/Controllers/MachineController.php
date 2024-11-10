@@ -8,51 +8,66 @@ use App\Models\LineModel;
 use Illuminate\Http\Request;
 use App\Models\Users;
 
-
 class MachineController extends Controller
 {
+
+    public function returnInitialPage()
+    {
+        return redirect()->route("machines");
+    }
+
     public function index()
     {
         $machines = $this->showMachines();
         return view("MachinePages/mainMachinePage", ["machines" => $machines]);
     }
 
-    public function create( Request $request ){
+    public function create(Request $request)
+    {
         $model = new LineModel();
         $lines = $model->lineList();
         return view("MachinePages.MachineRegister", compact("lines"));
     }
 
 
-    public function store( Request $request ){
-    
+    public function store(Request $request)
+    {
+
         $email = $request->selectedUserMail;
 
         if (!empty($email)) {
             $model = new LineModel();
-            $lineName = $model->lineId( $request->lineList );
+            $lineName = $model->lineId($request->lineList);
 
             $userid = Users::getId($email);
 
             $machine = new MachineModel();
             $machineUser = new UserMachineModel();
 
-            $machine->saveMachine($request->nome, $request->descricao, $lineName );
-            $machineUser->saveMachineUser($userid,$machine->getKey(), false);
+            $machine->saveMachine($request->nome, $request->descricao, $lineName);
+            $machineUser->saveMachineUser($userid, $machine->getKey(), false);
         }
-        return redirect()->back();
+        $this->returnInitialPage();
     }
 
     public function showMachines()
     {
-        $machinesList = MachineModel::all();
-        return $machinesList;
+        if (session()->has('user')) {
+            $userSession = session('user');
+            $userId = $userSession->getKey();
+
+            $machinesListId = UserMachineModel::where('user_id', $userId)->pluck('machine_id');
+
+            $machinesList = MachineModel::whereIn('id', $machinesListId)->get();
+
+            return $machinesList;
+        }
     }
 
     public function showDescription($id)
     {
         $machine = MachineModel::with('courses')->findOrFail($id);
-    
+
         return view('MachinePages.MachineDetails', compact('machine'));
     }
 
@@ -68,19 +83,19 @@ class MachineController extends Controller
         $machine->name = $request->input('name');
         $machine->description = $request->input('description');
         $machine->save();
-    
-        return redirect()->route('machines')->with('success', 'Machine updated successfully');
+
+        $this->returnInitialPage();
     }
 
     public function destroy($id)
     {
         $machine = MachineModel::findOrFail($id);
-    
+
         $machine->courses()->delete();
-    
+
         $machine->delete();
-    
-        return redirect()->route('machines')->with('success', 'Machine deleted successfully');
+
+        $this->returnInitialPage();
     }
 
 }

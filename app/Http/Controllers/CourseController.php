@@ -44,7 +44,7 @@ class CourseController extends Controller
         $isActivity = true; 
        }
 
-       $course->saveCourse($request->nome,'1', $request->descricao, $request->videopercent, $request->campo_extra, $isActivity );
+       $course->saveCourse($request->nome,'0', $request->descricao, $request->videopercent, $request->campo_extra, $isActivity );
 
        $email = $request->selectedUserMail;
 

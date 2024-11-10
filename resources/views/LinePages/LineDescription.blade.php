@@ -1,6 +1,8 @@
 @extends('Layout.internPattern')
 @section('content')
 
+<link rel="stylesheet" href="{{ asset('CSS/gridDisplayer.css') }}">
+
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
@@ -13,27 +15,17 @@
 
     <div class="mt-4">
         <h4>Máquinas Associadas</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nome da Máquina</th>
-                    <th>Descrição</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($line->machines as $machine)
-                    <tr>
-                        <td>{{ $machine->name }}</td>
-                        <td>{{ $machine->description }}</td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="2" class="text-center">Nenhuma máquina associada a esta linha</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="machine-grid">
+            @forelse ($line->machines as $machine)
+                <div class="select-item" data-id="{{ $machine->id }}" onclick="toggleSelection(this)">
+                    <h5>{{ $machine->name }}</h5>
+                </div>
+            @empty
+                <p class="text-center">Nenhuma máquina associada a esta linha</p>
+            @endforelse
+        </div>
     </div>
 </div>
+<script src="{{ asset('JS/gridSelector.js') }}"></script>
 
 @endsection

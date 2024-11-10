@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,12 +12,13 @@ return new class extends Migration
     {
 
         Schema::create('production_lines', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
             $table->unsignedBigInteger('admin_id');
             $table->text('description');
             $table->timestamps();
 
-            $table->foreign('admin_id')->references('id')->on('user');
+            $table->foreign('admin_id')->references('id')->on('user')->onDelete('cascade');
+            ;
         });
 
         Schema::create('machines', function (Blueprint $table) {
@@ -27,8 +27,7 @@ return new class extends Migration
             $table->text('description');
             $table->timestamps();
 
-            
-            $table->foreign('line_id')->references('id')->on('production_lines');
+            $table->foreign('line_id')->references('id')->on('production_lines')->onDelete('cascade');
         });
 
         Schema::create('user_machine', function (Blueprint $table) {
@@ -38,7 +37,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('user');
-            $table->foreign('machine_id')->references('id')->on('machines');
+            $table->foreign('machine_id')
+                ->references('id')->on('machines')
+                ->onDelete('cascade');
         });
 
         Schema::create('courses', function (Blueprint $table) {
@@ -50,7 +51,7 @@ return new class extends Migration
             $table->boolean("activity");
             $table->timestamps();
 
-            $table->foreign('machine_id')->references('id')->on('machines');
+            $table->foreign('machine_id')->references('id')->on('machines')->onDelete('cascade');
         });
 
         Schema::create('user_course', function (Blueprint $table) {
@@ -61,7 +62,7 @@ return new class extends Migration
             $table->integer('activity_percentage');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('user');
         });
 
@@ -69,10 +70,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('course_id');
             $table->text('description');
-            $table->binary('video'); 
+            $table->binary('video');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('course_id')
+                ->references('id')->on('courses')
+                ->onDelete('cascade');
         });
 
         // Tabela Activity
@@ -83,7 +86,9 @@ return new class extends Migration
             $table->text('answer');
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('course_id')
+                ->references('id')->on('courses')
+                ->onDelete('cascade');
         });
 
         Schema::create('options', function (Blueprint $table) {
@@ -97,7 +102,7 @@ return new class extends Migration
     }
 
     public function down(): void
-{
+    {
         Schema::dropIfExists('bank');
     }
 };

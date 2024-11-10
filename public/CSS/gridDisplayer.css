@@ -1,0 +1,20 @@
+.machine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.select-item {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.select-item.selected {
+    background-color: red;
+    color: white; /* Ajusta a cor do texto para contraste */
+    border-color: red;
+}

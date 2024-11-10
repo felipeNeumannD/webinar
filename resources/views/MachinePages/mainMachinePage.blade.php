@@ -10,11 +10,13 @@
         <div class="mt-3">
             <h5>Linhas Presentes:</h5>
             <table class="table">
-                @foreach ($machines as $machine)
+                @forelse ($machines as $machine)
                     <div class="selectable-line" data-id="{{ $machine->id }}">
                         {{ $machine->name }}
                     </div>
-                @endforeach
+                @empty
+                    <p>Nenhuma máquina encontrada.</p>
+                @endforelse
             </table>
         </div>
         <div class="text-end mt-4">

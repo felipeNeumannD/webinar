@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Users;
+use Illuminate\Support\Facades\Session;
+
 
 class LoginController extends Controller
 {
@@ -38,9 +40,8 @@ class LoginController extends Controller
         $user = Users::where('email', $request->Email)->first();
 
         if ($user) {
-
             if (Hash::check($request->Password, $user->password)) {
-                session(['user' => $user]);
+                Session::put('user', $user);
                 return view("mainView");
             } else {
                 return redirect("/");

@@ -43,6 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('machines')}}">Máquinas disponíveis</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('courses')}}">Cursos Disponíveis</a>
+                        </li>
                     </ul>
                 </div>
             </div>

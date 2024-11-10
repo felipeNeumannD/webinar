@@ -30,8 +30,8 @@
         </div>
 
         <div class="text-end mt-4">
-            <a href="{{ route('machine.create') }}" class="btn btn-secondary btn-sm">
-                Cadastrar Novo
+            <a href="{{ route('course.create') }}" class="btn btn-secondary btn-sm">
+                Cadastrar Novo Curso
             </a>
         </div>
     </div>
