@@ -5,7 +5,7 @@
 <div class="main1 d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4"
         style="width: 400px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-        <form action="{{route('course.store')}}" method="POST">
+        <form action="{{route('course.store', ['id' => $id])}}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="nome" class="form-label">Nome</label>

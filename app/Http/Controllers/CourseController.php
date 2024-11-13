@@ -16,9 +16,9 @@ class CourseController extends Controller
         return view("CoursePages/mainCoursePage", ["courses" => $courses]);
     }
 
-    public function create()
+    public function create($id)
     {
-        return view('CoursePages.CourseRegister');
+        return view('CoursePages.CourseRegister', compact("id"));
     }
 
     public function getCoursesByAccess()
@@ -33,7 +33,7 @@ class CourseController extends Controller
         return view('CoursePages.video', compact('videos'));
     }
 
-    public function store( Request $request )
+    public function store( Request $request, $id )
     {
        $course = new CourseModel();
        $courseUser = new UserCourseModel();
@@ -44,7 +44,7 @@ class CourseController extends Controller
         $isActivity = true; 
        }
 
-       $course->saveCourse($request->nome,'0', $request->descricao, $request->videopercent, $request->campo_extra, $isActivity );
+       $course->saveCourse($request->nome,$id, $request->descricao, $request->videopercent, $request->campo_extra, $isActivity );
 
        $email = $request->selectedUserMail;
 

@@ -66,11 +66,11 @@ return new class extends Migration {
             $table->foreign('user_id')->references('id')->on('user');
         });
 
-        Schema::create('videos', function (Blueprint $table) {
+        Schema::create('capitulo', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('course_id');
             $table->text('description');
-            $table->binary('video');
+            $table->text('name');
             $table->timestamps();
 
             $table->foreign('course_id')
@@ -78,16 +78,28 @@ return new class extends Migration {
                 ->onDelete('cascade');
         });
 
+        Schema::create('videos', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('capitulo_id');
+            $table->text('description');
+            $table->binary('video');
+            $table->timestamps();
+
+            $table->foreign('capitulo_id')
+                ->references('id')->on('capitulo')
+                ->onDelete('cascade');
+        });
+
         // Tabela Activity
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('course_id');
+            $table->unsignedBigInteger('capitulo_id');
             $table->text('activity_description');
             $table->text('answer');
             $table->timestamps();
 
-            $table->foreign('course_id')
-                ->references('id')->on('courses')
+            $table->foreign('capitulo_id')
+                ->references('id')->on('capitulo')
                 ->onDelete('cascade');
         });
 

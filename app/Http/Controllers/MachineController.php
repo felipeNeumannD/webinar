@@ -47,7 +47,7 @@ class MachineController extends Controller
             $machine->saveMachine($request->nome, $request->descricao, $lineName);
             $machineUser->saveMachineUser($userid, $machine->getKey(), false);
         }
-        $this->returnInitialPage();
+        return $this->returnInitialPage();
     }
 
     public function showMachines()
@@ -84,7 +84,7 @@ class MachineController extends Controller
         $machine->description = $request->input('description');
         $machine->save();
 
-        $this->returnInitialPage();
+        return $this->returnInitialPage();
     }
 
     public function destroy($id)
@@ -95,7 +95,7 @@ class MachineController extends Controller
 
         $machine->delete();
 
-        $this->returnInitialPage();
+        return $this->returnInitialPage();
     }
 
 }

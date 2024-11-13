@@ -39,7 +39,7 @@ class LineController extends Controller
 
             $line->save();
         }
-        $this->returnInitialPage();
+        return $this->returnInitialPage();
     }
 
 
@@ -73,7 +73,7 @@ class LineController extends Controller
         $line->description = $request->input('description');
         $line->save();
     
-        $this->returnInitialPage();
+        return $this->returnInitialPage();
     }
 
     public function destroy($id)
@@ -82,7 +82,7 @@ class LineController extends Controller
     
         $line->forceDelete();
     
-        $this->returnInitialPage();
+        return $this->returnInitialPage();
     }
 
 }

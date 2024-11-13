@@ -40,9 +40,9 @@ Route::prefix('machine')->group(function () {
 
 Route::prefix('course')->group(function () {
     Route::get('/', [CourseController::class, 'index'])->name('courses');
-    Route::get('/cadastro', [CourseController::class, 'create'])->name('course.create');
+    Route::get('/cadastro/{id}', [CourseController::class, 'create'])->name('course.create');
     Route::get('/{id}/description', [CourseController::class, 'showDescription'])->name('course.description');
-    Route::post('/courseRegister', [CourseController::class, 'store'])->name('course.store');
+    Route::post('/courseRegister/{id}/register', [CourseController::class, 'store'])->name('course.store');
     Route::get('{id}/edit', [CourseController::class, 'edit'])->name('course.edit');
     Route::put('/{id}', [MachineController::class, 'update'])->name('courses.update');
     Route::delete('/{id}', [MachineController::class, 'destroy'])->name('courses.destroy');
