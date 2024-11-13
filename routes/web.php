@@ -47,11 +47,15 @@ Route::prefix('course')->group(function () {
     Route::put('/{id}', [MachineController::class, 'update'])->name('courses.update');
     Route::delete('/{id}', [MachineController::class, 'destroy'])->name('courses.destroy');
 
+    
+
     Route::post('/upload-video', [CourseController::class, 'storeVideo'])->name('upload.video');
     Route::get('/video', [CourseController::class, 'getRegisterVideoPage'])->name('RegisterVideoPage');
     Route::get('/show_video', [CourseController::class, 'getShowVideo'])->name('video.show');
-    
+
 });
+
+
 
 
 Route::prefix('main')->group(function () {

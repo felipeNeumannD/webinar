@@ -4,21 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            background: linear-gradient(135deg, #6ab1d7 0%, #33d9b2 100%);
-            height: 100%;
-            margin: 0;
-        }
-    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <title>@yield('title')</title>
+    <style>
+        body {
+            background-color: #212529;
+            /* Dark background color */
+            color: white;
+            /* White text color */
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: white !important;
+            /* White color for navbar elements */
+        }
+
+        .hero {
+            background-image: url("path/to/your/banner.jpg");
+            /* Replace with your banner image path */
+            background-size: cover;
+            background-position: center;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            /* Increase main text size */
+            margin-bottom: 1rem;
+        }
+
+        .card-deck {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .card {
+            margin: 1rem;
+            background-color: #343a40;
+            /* Darker card background */
+            color: white;
+            border: none;
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">WEBINAR</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -50,12 +95,13 @@
         </div>
     </nav>
 
-    <div>
-        @yield('content')
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-</body>
+    <section class="hero">
+        <h1>Bem-vindo ao Webinar!</h1>
+        <p>Aprenda e se desenvolva com a gente.</p>
+    </section>
 
-</html>
+    <div class="container">
+        <div class="card-deck">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
