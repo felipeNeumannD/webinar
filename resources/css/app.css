@@ -1,0 +1,20 @@
+body {
+    background-color: #a8d5a2;
+}
+
+.navbar {
+    background-color: #6db06d;
+    color: white;
+}
+
+.item-listagem {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.listagem-container {
+    max-width: 800px;
+    margin: auto;
+}

@@ -4,12 +4,11 @@
 <link rel="stylesheet" href="{{ asset('CSS/view.css') }}">
 
 <div class="main1 d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4"
-        style="width: 600px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-        <h2 class="text-center">Lista de máquinas</h2>
+    <div class="card p-4">
+        <h2 class="text-center">Lista de Máquinas</h2>
         <div class="mt-3">
-            <h5>Linhas Presentes:</h5>
-            <table class="table">
+            <h5>Máquinas Presentes:</h5>
+            <div class="listagem-container">
                 @forelse ($machines as $machine)
                     <div class="selectable-line" data-id="{{ $machine->id }}">
                         {{ $machine->name }}
@@ -17,7 +16,7 @@
                 @empty
                     <p>Nenhuma máquina encontrada.</p>
                 @endforelse
-            </table>
+            </div>
         </div>
         <div class="text-end mt-4">
             <button id="verButton" class="btn btn-sm btn-info">Ver</button>
