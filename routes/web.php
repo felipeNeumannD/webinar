@@ -47,6 +47,8 @@ Route::prefix('course')->group(function () {
     Route::put('/{id}', [MachineController::class, 'update'])->name('courses.update');
     Route::delete('/{id}', [MachineController::class, 'destroy'])->name('courses.destroy');
 
+    Route::get('/{id}/class/register', [CourseController::class, 'storeClass'])->name('course.store');
+
     
 
     Route::post('/upload-video', [CourseController::class, 'storeVideo'])->name('upload.video');

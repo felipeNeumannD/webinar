@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CourseModel;
 use App\Models\UserCourseModel;
+use App\Models\ChapterModel;
 use App\Models\Video;
 use App\Models\Users;
 
@@ -28,33 +29,33 @@ class CourseController extends Controller
 
     public function getShowVideo()
     {
-        $videos = Video::all();
 
-        return view('CoursePages.video', compact('videos'));
     }
 
-    public function showDescription()
+    public function showDescription($id)
     {
-        return view('CoursePages.mainCoursePage');
+        $classes = ChapterModel::where('course_id', $id)->get();
+
+        return view('CoursePages.mainCoursePage', compact(['classes']));
+
     }
 
-    public function store( Request $request, $id )
+    public function store(Request $request, $id)
     {
-       $course = new CourseModel();
-       $courseUser = new UserCourseModel();
+        $course = new CourseModel();
+        $courseUser = new UserCourseModel();
 
-       $isActivity = false;
-       if( $request->campo_extra != null)
-       {
-        $isActivity = true; 
-       }
+        $isActivity = false;
+        if ($request->campo_extra != null) {
+            $isActivity = true;
+        }
 
-       $course->saveCourse($request->nome,$id, $request->descricao, $request->videopercent, $request->campo_extra, $isActivity );
+        $course->saveCourse($request->nome, $id, $request->descricao, $request->videopercent, $request->campo_extra, $isActivity);
 
-       $email = $request->selectedUserMail;
+        $email = $request->selectedUserMail;
 
-       $id = Users::getId($email);
-       $courseUser->saveUserCourse( $id, $course->getKey(), 0, 0 );
+        $id = Users::getId($email);
+        $courseUser->saveUserCourse($id, $course->getKey(), 0, 0);
 
         return redirect('/main');
     }
@@ -64,7 +65,7 @@ class CourseController extends Controller
         return view('CoursePages/RegisterVideo');
     }
 
-    public function storeVideo( Request $request )
+    public function storeVideo(Request $request)
     {
         $request->validate([
             'video' => 'required|mimes:mp4,mov,ogg,qt|max:20000',
@@ -83,7 +84,22 @@ class CourseController extends Controller
         }
 
     }
-    
 
+    public function addChapter($id)
+    {
+        $classes = CourseModel::where('course_id', $id)->get();
+    }
+
+    public function storeClass($idCourse)
+    {
+        $videos = Video::all();
+
+        $idCourse = 1;
+        $chapterName = "Nome de Exemplo";
+        $chapterDescription = "Exemplo de descrição.";
+
+        return view('CoursePages.RegisterVideoContent', compact('videos'));
+
+    }
 
 }
