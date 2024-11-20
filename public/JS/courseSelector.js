@@ -1,22 +1,3 @@
-let href; 
-let selectedId = null;
-
-const fullPath = window.location.pathname;
-const pathSegments = fullPath.split('/');
-
-const mainSegment = pathSegments[1];
-const itemId = pathSegments[2]; 
-
-
-switch(mainSegment){
-    case "line":
-        href = "machine"
-        break;
-    case "machine":
-        href = "course"
-        break
-}
-
 
 document.addEventListener('DOMContentLoaded', () => {
 

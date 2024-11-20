@@ -1,0 +1,46 @@
+.course_select_item {
+    display: block;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 250px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.name {
+    text-align: center;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    margin-bottom: 10px;
+}
+
+.description {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.generic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.course_select_image {
+    display: flex;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    height: 250px;
+    justify-content: center;
+}
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

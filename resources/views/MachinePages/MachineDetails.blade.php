@@ -17,7 +17,7 @@
 
     <div class="mt-4">
         <h4>Cursos Associados</h4>
-        <div class="machine-grid">
+        <div class="generic-grid">
             @forelse ($machine->courses as $course)
                 <div class="select-item" data-id="{{ $course->id }}" onclick="toggleSelection(this)">
                     <h5>{{ $course->name }}</h5>

@@ -33,6 +33,11 @@ class CourseController extends Controller
         return view('CoursePages.video', compact('videos'));
     }
 
+    public function showDescription()
+    {
+        return view('CoursePages.mainCoursePage');
+    }
+
     public function store( Request $request, $id )
     {
        $course = new CourseModel();
