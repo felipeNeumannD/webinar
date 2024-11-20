@@ -27,11 +27,6 @@ class CourseController extends Controller
         return CourseModel::all();
     }
 
-    public function getShowVideo()
-    {
-
-    }
-
     public function showDescription($id)
     {
         $classes = ChapterModel::where('course_id', $id)->get();
@@ -72,15 +67,18 @@ class CourseController extends Controller
         ]);
 
         if ($request->hasFile('video')) {
+
+
+            $idChapter = $request->hidden_number;
+
             $videoPath = $request->file('video')->store('videos', 'public');
 
             $video = new Video();
-            $video->course_id = "2";
+            $video->capitulo_id = $idChapter;
             $video->description = "Teste";
             $video->video = $videoPath;
             $video->save();
 
-            return redirect("")->route("RegisterVideoPage");
         }
 
     }
@@ -90,15 +88,15 @@ class CourseController extends Controller
         $classes = CourseModel::where('course_id', $id)->get();
     }
 
-    public function storeClass($idCourse)
+    public function storeClass( $idCourse )
     {
+        $chapter = new ChapterModel;
+
+        $chapter->saveCourse($idCourse,"Null", "Null");
+
         $videos = Video::all();
 
-        $idCourse = 1;
-        $chapterName = "Nome de Exemplo";
-        $chapterDescription = "Exemplo de descrição.";
-
-        return view('CoursePages.RegisterVideoContent', compact('videos'));
+        return view('CoursePages.RegisterVideoContent', compact('videos', 'chapter'));
 
     }
 

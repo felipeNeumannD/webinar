@@ -40,6 +40,14 @@
                         <a href="#" class="btn btn-primary">Assistir</a>
                     </div>
                 </div>
+
+                <div class="card video-card">
+                    <img src="https://via.placeholder.com/300x200" alt="Thumbnail do Vídeo" class="video-thumbnail">
+                    <div class="content">
+                        @include('CoursePages.RegisterVideo')
+                    </div>
+                </div>
+
                 @forelse ($videos as $video)
                     <div class="card video-card">
                         <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
@@ -49,7 +57,7 @@
                         </div>
                     </div>
                 @empty
-                
+
                 @endforelse
             </div>
 
