@@ -78,7 +78,6 @@ class CourseController extends Controller
             $video->description = "Teste";
             $video->video = $videoPath;
             $video->save();
-
         }
 
     }

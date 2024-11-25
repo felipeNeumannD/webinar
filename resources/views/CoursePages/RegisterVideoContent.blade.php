@@ -10,19 +10,21 @@
                 @csrf
                 <div class="mb-3">
                     <label for="name" class="form-label">Nome do Curso</label>
-                    <input type="text" id="name" name="name" class="form-control" placeholder="Escreva o nome do curso aqui...">
+                    <input type="text" id="name" name="name" class="form-control"
+                        placeholder="Escreva o nome do curso aqui...">
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Descrição do Curso</label>
                     <textarea id="description" name="description" rows="4" class="form-control"
-                              placeholder="Escreva a descrição do curso aqui..."></textarea>
+                        placeholder="Escreva a descrição do curso aqui..."></textarea>
                 </div>
             </form>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="section-header">Vídeos</h2>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#videoModal">Adicionar Vídeo</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#videoModal">Adicionar
+                Vídeo</button>
         </div>
 
         <div id="videosList" class="row"></div>
@@ -33,11 +35,12 @@
     </section>
 </div>
 
-<!-- Modal para Adicionar Vídeo -->
+
 <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="addVideoForm" enctype="multipart/form-data">
+                @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="videoModalLabel">Adicionar Vídeo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -49,7 +52,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="videoDescription" class="form-label">Descrição do Vídeo</label>
-                        <textarea id="videoDescription" rows="4" class="form-control" placeholder="Digite a descrição"></textarea>
+                        <textarea id="videoDescription" rows="4" class="form-control"
+                            placeholder="Digite a descrição"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="videoFile" class="form-label">Arquivo do Vídeo</label>
