@@ -47,7 +47,10 @@ Route::prefix('course')->group(function () {
     Route::put('/{id}', [MachineController::class, 'update'])->name('courses.update');
     Route::delete('/{id}', [MachineController::class, 'destroy'])->name('courses.destroy');
 
-    Route::get('/{id}/class/register', [CourseController::class, 'storeClass'])->name('class.store');
+
+    Route::delete('/class/{id}', [CourseController::class, 'destroyClass'])->name('classes.destroy');
+    Route::get('/{id}/class/content', [CourseController::class, 'exploreClass'])->name('class.explore');
+    Route::post('/{id}/class/register', [CourseController::class, 'storeClass'])->name('class.store');
 
     
 

@@ -83,20 +83,33 @@ class CourseController extends Controller
 
     }
 
-    public function addChapter($id)
+    public function addChapter( $id)
     {
         $classes = CourseModel::where('course_id', $id)->get();
     }
 
-    public function storeClass( $idCourse )
-    {
-        $chapter = new ChapterModel;
-
-        $chapter->saveCourse($idCourse,"Null", "Null");
+    public function exploreClass($idCourse){
 
         $videos = Video::all();
 
-        return view('CoursePages.RegisterVideoContent', compact('videos', 'chapter'));
+        return view('CoursePages.RegisterVideoContent', compact('videos', 'idCourse'));
+    }
+
+    public function storeClass( $idCourse, Request $request )
+    {
+        $chapter = new ChapterModel;
+
+        $chapter->saveCourse($idCourse,$request->description, $request->name);
+
+        return $this->showDescription($idCourse);
+    }
+
+    public function destroyClass( $id )
+    {
+        $chapter = ChapterModel::findOrFail($id);
+        $chapter->delete();
+
+        return redirect()->back();
 
     }
 

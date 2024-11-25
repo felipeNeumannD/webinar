@@ -12,8 +12,8 @@ class ChapterModel extends Model
 
     public function saveCourse( $course_id, $description, $name ) {
 
-        $this->name = $name;
         $this->course_id = $course_id;
+        $this->name = $name;
         $this->description = $description;
 
         $this-> save();

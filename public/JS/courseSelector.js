@@ -8,12 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const element = document.querySelectorAll('.course_select_item')
     const addElement = document.querySelectorAll('.course_select_image')
 
-    element.forEach(line => {
-        line.addEventListener('dblclick', () => {
-            changePage();
-        });
-    });
-
     addElement.forEach(line => {
         line.addEventListener('dblclick', () => {
             addCourseElement( pathSegments[2] );
@@ -22,12 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 })
 
-function changePage() {
-    window.location.pathname = `${href}/${selectedId}/description`;
-}
 
 function addCourseElement(courseId) {
-    window.location.pathname = `${pathSegments[1]}/${courseId}/class/register`;
+    window.location.pathname = `${pathSegments[1]}/${courseId}/class/content`;
 }
 
 function toggleSelection(element) {

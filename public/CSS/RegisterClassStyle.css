@@ -1,0 +1,71 @@
+.video-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-bottom: 20px;
+}
+
+.video-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.video-thumbnail {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.content {
+    padding: 15px;
+}
+
+.btn-custom {
+    background-color: #28a745;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.btn-custom:hover {
+    background-color: #218838;
+}
+
+.btn-add-video {
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+}
+
+.btn-add-video:hover {
+    background-color: #0056b3;
+}
+
+.form-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group input,
+.form-group textarea {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+.section-header {
+    border-bottom: 2px solid #28a745;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    color: #333;
+}

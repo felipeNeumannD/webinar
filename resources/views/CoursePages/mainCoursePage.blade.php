@@ -8,8 +8,18 @@
     <div class="generic-grid">
         @forelse ($classes as $class)
             <div class="course_select_item">
-                <div class="name">Exemplo de Nome</div>
-                <div class="description">Exemplo de Descriçãooooooooooooooooooooooooooooooooooooo</div>
+                <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" style="background: none; border: none; cursor: pointer;">
+                        <img style="height: 36px; width: 36px" src="{{ asset('images/garbage.png') }}" alt="Excluir">
+                    </button>
+                </form>
+                <button>
+                    <img style="height: 36px; width: 36px" src="{{ asset('images/pencil.png') }}">
+                </button>
+                <div class="name">{{$class->name}}</div>
+                <div class="description">{{$class->description}}</div>
             </div>
         @empty
             <p>Nenhuma aula encontrada encontrada.</p>
