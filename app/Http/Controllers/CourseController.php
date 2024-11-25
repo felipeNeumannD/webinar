@@ -82,28 +82,70 @@ class CourseController extends Controller
 
     }
 
-    public function addChapter( $id)
+    public function addChapter($id)
     {
         $classes = CourseModel::where('course_id', $id)->get();
     }
 
-    public function exploreClass($idCourse){
+    public function exploreClass($idCourse)
+    {
 
         $videos = Video::all();
 
         return view('CoursePages.RegisterVideoContent', compact('videos', 'idCourse'));
     }
 
-    public function storeClass( $idCourse, Request $request )
-    {
-        $chapter = new ChapterModel;
+    public function storeClass(Request $request, $idCourse)
+{
+    try {
+        // Validação
+        $validated = $request->validate([
+            'courseName' => 'required|string|max:255',
+            'courseDescription' => 'required|string|max:1000',
+            'videos' => 'required|array',
+            'videos.*.name' => 'required|string|max:255',
+            'videos.*.description' => 'required|string|max:1000',
+            'videos.*.file' => 'required|file|mimetypes:video/mp4|max:20480',
+        ]);
 
-        $chapter->saveCourse($idCourse,$request->description, $request->name);
+        // Criar o capítulo (curso)
+        $chapter = ChapterModel::create([
+            'course_id' => $idCourse,
+            'name' => $validated['courseName'],
+            'description' => $validated['courseDescription'],
+        ]);
 
-        return $this->showDescription($idCourse);
+        // Processar os vídeos
+        foreach ($request->videos as $index => $videoData) {
+            // Capturar o arquivo enviado
+            $videoFile = $videoData['file'];
+
+            $filePath = $videoFile->store('videos', 'public');
+
+            Video::create([
+                'capitulo_id' => $chapter->id, // ID do capítulo/curso
+                'description' => $videoData['description'],
+                'video' => $filePath, // Caminho do arquivo no sistema de arquivos
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Curso e vídeos salvos com sucesso!',
+            'course_id' => $idCourse,
+        ], 201);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => 'Erro ao salvar o curso e vídeos.',
+            'details' => $e->getMessage(),
+        ], 500);
     }
+}
 
-    public function destroyClass( $id )
+
+
+
+    public function destroyClass($id)
     {
         $chapter = ChapterModel::findOrFail($id);
         $chapter->delete();

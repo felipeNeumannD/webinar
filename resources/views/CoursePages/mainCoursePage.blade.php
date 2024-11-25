@@ -15,9 +15,13 @@
                         <img style="height: 36px; width: 36px" src="{{ asset('images/garbage.png') }}" alt="Excluir">
                     </button>
                 </form>
-                <button>
-                    <img style="height: 36px; width: 36px" src="{{ asset('images/pencil.png') }}">
-                </button>
+                <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('PUT')
+                    <button>
+                        <img style="height: 36px; width: 36px" src="{{ asset('images/pencil.png') }}">
+                    </button>
+                </form>
                 <div class="name">{{$class->name}}</div>
                 <div class="description">{{$class->description}}</div>
             </div>

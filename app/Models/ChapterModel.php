@@ -18,5 +18,11 @@ class ChapterModel extends Model
 
         $this-> save();
     }
+
+    protected $fillable = [
+        'course_id',
+        'name',
+        'description'
+    ];
     
 }
