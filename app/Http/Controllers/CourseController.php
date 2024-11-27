@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\CourseModel;
 use App\Models\UserCourseModel;
 use App\Models\ChapterModel;
-use App\Models\Video;
+use App\Models\VideoModel;
 use App\Models\Users;
+use App\Models\ActivityModel;
+use App\Models\OptionModel;
 
 class CourseController extends Controller
 {
@@ -60,27 +62,6 @@ class CourseController extends Controller
         return view('CoursePages/RegisterVideo');
     }
 
-    public function storeVideo(Request $request)
-    {
-        $request->validate([
-            'video' => 'required|mimes:mp4,mov,ogg,qt|max:20000',
-        ]);
-
-        if ($request->hasFile('video')) {
-
-
-            $idChapter = $request->hidden_number;
-
-            $videoPath = $request->file('video')->store('videos', 'public');
-
-            $video = new Video();
-            $video->capitulo_id = $idChapter;
-            $video->description = "Teste";
-            $video->video = $videoPath;
-            $video->save();
-        }
-
-    }
 
     public function addChapter($id)
     {
@@ -90,58 +71,107 @@ class CourseController extends Controller
     public function exploreClass($idCourse)
     {
 
-        $videos = Video::all();
+        $videos = VideoModel::all();
 
         return view('CoursePages.RegisterVideoContent', compact('videos', 'idCourse'));
     }
 
     public function storeClass(Request $request, $idCourse)
-{
-    try {
-        // Validação
-        $validated = $request->validate([
-            'courseName' => 'required|string|max:255',
-            'courseDescription' => 'required|string|max:1000',
-            'videos' => 'required|array',
-            'videos.*.name' => 'required|string|max:255',
-            'videos.*.description' => 'required|string|max:1000',
-            'videos.*.file' => 'required|file|mimetypes:video/mp4|max:20480',
-        ]);
+    {
+        try {
+            $validated = $request->validate([
+                'chapterName' => 'required|string|max:255',
+                'chapterDescription' => 'required|string|max:1000',
+                'videos' => 'required|array',
+                'videos.*.description' => 'required|string|max:1000',
+                'videos.*.file' => 'required|file|mimetypes:video/mp4|max:20480',
 
-        // Criar o capítulo (curso)
-        $chapter = ChapterModel::create([
-            'course_id' => $idCourse,
-            'name' => $validated['courseName'],
-            'description' => $validated['courseDescription'],
-        ]);
-
-        // Processar os vídeos
-        foreach ($request->videos as $index => $videoData) {
-            // Capturar o arquivo enviado
-            $videoFile = $videoData['file'];
-
-            $filePath = $videoFile->store('videos', 'public');
-
-            Video::create([
-                'capitulo_id' => $chapter->id, // ID do capítulo/curso
-                'description' => $videoData['description'],
-                'video' => $filePath, // Caminho do arquivo no sistema de arquivos
+                'activities' => 'nullable|array',
+                'activities.*.description' => 'required_with:activities|string|max:1000',
+                'activities.*.options' => 'required_with:activities|array|min:2',
+                'activities.*.options.*' => 'required|string|max:255',
+                'activities.*.correct_option' => 'required_with:activities|integer|min:0',
             ]);
+
+            $chapter = ChapterModel::create([
+                'course_id' => $idCourse,
+                'name' => $validated['chapterName'],
+                'description' => $validated['chapterDescription'],
+            ]);
+
+            $this->storeVideo($request->videos, $chapter->getKey());
+
+            $this->storeActivities($validated['activities'], $chapter->getKey());
+
+            return response()->json([
+                'message' => 'Curso, vídeos e atividades salvos com sucesso!',
+                'course_id' => $idCourse,
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erro ao salvar o curso, vídeos ou atividades.',
+                'details' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Curso e vídeos salvos com sucesso!',
-            'course_id' => $idCourse,
-        ], 201);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'error' => 'Erro ao salvar o curso e vídeos.',
-            'details' => $e->getMessage(),
-        ], 500);
     }
-}
 
+    public function storeVideo($videos, $chapterId)
+    {
+        if (!empty($videos)) {
+
+            foreach ($videos as $videoData) {
+                $videoFile = $videoData['file'];
+                $filePath = $videoFile->store('videos', 'public');
+
+                VideoModel::create([
+                    'capitulo_id' => $chapterId,
+                    'description' => $videoData['description'],
+                    'video' => $filePath,
+                ]);
+            }
+        }
+    }
+
+    public function storeActivities($activities, $chapterId)
+    {
+        if (!empty($activities)) {
+            foreach ($activities as $activityData) {
+                try {
+                    $activity = ActivityModel::create([
+                        'capitulo_id' => $chapterId,
+                        'activity_description' => $activityData['description'],
+                    ]);
+                    foreach ($activityData['options'] as $index => $optionDescription) {
+                        $option = OptionModel::create([
+                            'activity_id' => $activity->id,
+                            'description' => $optionDescription,
+                        ]);
+                        if ($index === (int) $activityData['correct_option']) {
+                            $activity->update(['correct_option_id' => $option->id]);
+                        }
+                    }
+                } catch (\Exception $e) {
+                    throw new \Exception("Erro ao salvar a atividade: " . $e->getMessage());
+                }
+            }
+        }
+    }
+
+    public function getChapterDetails($chapterId)
+    {
+        try {
+            $chapter = ChapterModel::with(['videos', 'activities.options'])->findOrFail($chapterId);
+
+            return response()->json([
+                'chapter' => $chapter,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Erro ao buscar os detalhes do capítulo.',
+                'details' => $e->getMessage(),
+            ], 500);
+        }
+    }
 
 
 
@@ -151,7 +181,6 @@ class CourseController extends Controller
         $chapter->delete();
 
         return redirect()->back();
-
     }
 
 }

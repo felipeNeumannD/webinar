@@ -10,13 +10,14 @@ class ChapterModel extends Model
     use HasFactory;
     protected $table = 'capitulo';
 
-    public function saveCourse( $course_id, $description, $name ) {
+    public function saveCourse($course_id, $description, $name)
+    {
 
         $this->course_id = $course_id;
         $this->name = $name;
         $this->description = $description;
 
-        $this-> save();
+        $this->save();
     }
 
     protected $fillable = [
@@ -24,5 +25,15 @@ class ChapterModel extends Model
         'name',
         'description'
     ];
-    
+
+    public function videos()
+    {
+        return $this->hasMany(VideoModel::class, 'chapter_id');
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(ActivityModel::class, 'capitulo_id');
+    }
+
 }
