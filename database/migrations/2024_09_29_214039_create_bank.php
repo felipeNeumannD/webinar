@@ -109,7 +109,9 @@ return new class extends Migration {
             $table->string('description');
             $table->timestamps();
 
-            $table->foreign('activity_id')->references('id')->on('activities');
+            $table->foreign('activity_id')
+            ->references('id')->on('activities')
+            ->onDelete('cascade');
         });
     }
 

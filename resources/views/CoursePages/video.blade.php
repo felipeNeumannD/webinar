@@ -1,20 +1,101 @@
-@extends('Layout.internPattern')
-@section('content')
+@extends('layout.coursesContent')
 
-<div class="main1 d-flex justify-content-center align-items-center vh-100">
-    <div class="card p-4"
-        style="width: 600px; background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-        <h1>Lista de Vídeos</h1>
-        @foreach ($videos as $video)
-                <h2>{{ $video->description }}</h2>
-                <p>Curso ID: {{ $video->course_id }}</p>
-                <video width="400px" height="300px" controls>
-                    <source src="{{ asset('storage/' . $video->video) }}" type="video/mp4">
-                    Seu navegador não suporta a tag de vídeo.
-                </video>
-            <hr>
+@section('content')
+<div class="container">
+    <h1>{{ $chapter->description }}</h1>
+
+    @if ($videos->isNotEmpty())
+        <!-- Navegação de Vídeos -->
+        <div id="video-navigation" class="text-center">
+            <button id="prevVideo" class="btn btn-primary" disabled>Anterior</button>
+            <button id="nextVideo" class="btn btn-primary">Próximo</button>
+        </div>
+
+        <!-- Seção de Vídeo -->
+        <div id="videoSection" class="mt-4">
+            <video id="mainVideo" controls width="100%">
+                <!-- O primeiro vídeo é carregado automaticamente -->
+                <source id="videoSource" src="{{ asset('storage/' . $videos[0]->video) }}" type="video/mp4">
+                Seu navegador não suporta o vídeo.
+            </video>
+            <p id="videoDescription" class="mt-2">{{ $videos[0]->description }}</p>
+        </div>
+    @else
+        <p class="text-danger">Nenhum vídeo disponível para este capítulo.</p>
+    @endif
+
+    <!-- Seção de Atividades -->
+    <div id="questionsSection" class="mt-4" style="display: none;">
+    <h2>Atividades</h2>
+    @if ($activities->isNotEmpty())
+        @foreach ($activities as $activity)
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>{{ $activity->activity_description }}</strong>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        @foreach ($activity->options as $option)
+                            <li class="list-group-item">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="activity[{{ $activity->id }}][options][]"
+                                        value="{{ $option->id }}" id="option-{{ $option->id }}">
+                                    <label class="form-check-label" for="option-{{ $option->id }}">
+                                        {{ $option->description }}
+                                    </label>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
         @endforeach
-    </div>
+    @else
+        <p class="text-danger">Nenhuma atividade disponível para este capítulo.</p>
+    @endif
 </div>
 
+
+</div>
+
+<script>
+    const videos = @json($videos);  // Recebe a lista de vídeos do Laravel
+    let currentVideoIndex = 0;  // Índice do vídeo atual
+
+    const mainVideo = document.getElementById('mainVideo');
+    const videoDescription = document.getElementById('videoDescription');
+    const videoSource = document.getElementById('videoSource');
+    const prevButton = document.getElementById('prevVideo');
+    const nextButton = document.getElementById('nextVideo');
+    const questionsSection = document.getElementById('questionsSection');
+
+    function updateVideo() {
+
+        videoSource.src = `/storage/${videos[currentVideoIndex].video}`;
+        videoDescription.textContent = videos[currentVideoIndex].description;
+
+        mainVideo.load();
+
+        prevButton.disabled = currentVideoIndex === 0;
+        nextButton.disabled = currentVideoIndex === videos.length - 1;
+
+        questionsSection.style.display = currentVideoIndex === videos.length - 1 ? 'block' : 'none';
+    }
+
+    prevButton.addEventListener('click', () => {
+        if (currentVideoIndex > 0) {
+            currentVideoIndex--;
+            updateVideo();
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        if (currentVideoIndex < videos.length - 1) {
+            currentVideoIndex++;
+            updateVideo();
+        }
+    });
+
+    updateVideo();
+</script>
 @endsection

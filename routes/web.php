@@ -44,19 +44,13 @@ Route::prefix('course')->group(function () {
     Route::get('/{id}/description', [CourseController::class, 'showDescription'])->name('course.description');
     Route::post('/courseRegister/{id}/register', [CourseController::class, 'store'])->name('course.store');
     Route::get('{id}/edit', [CourseController::class, 'edit'])->name('course.edit');
-    Route::put('/{id}', [MachineController::class, 'update'])->name('courses.update');
-    Route::delete('/{id}', [MachineController::class, 'destroy'])->name('courses.destroy');
 
 
     Route::delete('/class/{id}', [CourseController::class, 'destroyClass'])->name('classes.destroy');
     Route::get('/{id}/class/content', [CourseController::class, 'exploreClass'])->name('class.explore');
     Route::post('/{id}/class/register', [CourseController::class, 'storeClass'])->name('class.store');
 
-    
-
-    Route::post('/upload-video', [CourseController::class, 'storeVideo'])->name('upload.video');
-    Route::get('/video', [CourseController::class, 'getRegisterVideoPage'])->name('RegisterVideoPage');
-    Route::get('/show_video', [CourseController::class, 'getShowVideo'])->name('video.show');
+    Route::get('/{id}/class/show_video', [CourseController::class, 'showVideos'])->name('video.show');
 
 });
 

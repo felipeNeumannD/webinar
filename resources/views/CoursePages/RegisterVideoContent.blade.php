@@ -152,6 +152,8 @@
         renderVideos();
     }
 
+
+    
     //Atividades
 
 
@@ -225,7 +227,7 @@
         activities.push(activity);
         renderActivities();
         document.getElementById('addActivityForm').reset();
-        document.getElementById('optionsContainer').innerHTML = ''; // Limpar opções
+        document.getElementById('optionsContainer').innerHTML = '';
         bootstrap.Modal.getInstance(document.getElementById('activityModal')).hide();
     });
 

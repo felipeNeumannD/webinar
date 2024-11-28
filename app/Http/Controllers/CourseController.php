@@ -10,6 +10,8 @@ use App\Models\VideoModel;
 use App\Models\Users;
 use App\Models\ActivityModel;
 use App\Models\OptionModel;
+use Illuminate\Support\Facades\Storage;
+
 
 class CourseController extends Controller
 {
@@ -157,30 +159,39 @@ class CourseController extends Controller
         }
     }
 
-    public function getChapterDetails($chapterId)
+
+    public function destroyClass($id)
     {
         try {
-            $chapter = ChapterModel::with(['videos', 'activities.options'])->findOrFail($chapterId);
+            $chapter = ChapterModel::findOrFail($id);
 
-            return response()->json([
-                'chapter' => $chapter,
-            ], 200);
+            $videos = VideoModel::where('capitulo_id', $id)->get();
+
+            foreach ($videos as $video) {
+                if (Storage::disk('public')->exists($video->video)) {
+                    Storage::disk('public')->delete($video->video);
+                }
+            }
+
+            VideoModel::where('capitulo_id', $id)->delete();
+
+            $chapter->delete();
+
+            return redirect()->back()->with('success', 'Capítulo e vídeos excluídos com sucesso!');
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'Erro ao buscar os detalhes do capítulo.',
-                'details' => $e->getMessage(),
-            ], 500);
+            return redirect()->back()->with('error', 'Erro ao excluir o capítulo: ' . $e->getMessage());
         }
     }
 
 
-
-    public function destroyClass($id)
+    public function showVideos($chapterId)
     {
-        $chapter = ChapterModel::findOrFail($id);
-        $chapter->delete();
+        $chapter = ChapterModel::findOrFail($chapterId);
+        $videos = $chapter->videos;
+        $activities = $chapter->activities()->with('options')->get();
 
-        return redirect()->back();
+        return view('CoursePages.video', compact('chapter','videos', 'activities'));
     }
+
 
 }

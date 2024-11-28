@@ -7,7 +7,7 @@
 
     <div class="generic-grid">
         @forelse ($classes as $class)
-            <div class="course_select_item">
+            <div class="course_select_item" onclick="acessElement({{$class->id}})">
                 <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')

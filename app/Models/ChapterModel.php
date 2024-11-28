@@ -28,7 +28,7 @@ class ChapterModel extends Model
 
     public function videos()
     {
-        return $this->hasMany(VideoModel::class, 'chapter_id');
+        return $this->hasMany(VideoModel::class, 'capitulo_id');
     }
 
     public function activities()

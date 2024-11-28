@@ -21,8 +21,6 @@ function addCourseElement(courseId) {
     window.location.pathname = `${pathSegments[1]}/${courseId}/class/content`;
 }
 
-function toggleSelection(element) {
-    document.querySelectorAll('.select-item').forEach(line => line.classList.remove('selected'));
-    element.classList.toggle('selected');
-    selectedId = element.getAttribute('data-id');
+function acessElement(id){
+    window.location.pathname = `course/${id}/class/show_video`;
 }

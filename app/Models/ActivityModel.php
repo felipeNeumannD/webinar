@@ -18,8 +18,8 @@ class ActivityModel extends Model
 
 
     public function options()
-{
-    return $this->hasMany(OptionModel::class, 'activity_id');
-}
+    {
+        return $this->hasMany(OptionModel::class, 'activity_id');
+    }
 
 }
