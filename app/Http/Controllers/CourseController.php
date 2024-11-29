@@ -54,7 +54,7 @@ class CourseController extends Controller
         $email = $request->selectedUserMail;
 
         $id = Users::getId($email);
-        $courseUser->saveUserCourse($id, $course->getKey(), 0, 0);
+        $courseUser->saveUserCourse($id, $course->getKey(), false);
 
         return redirect('/main');
     }
@@ -191,6 +191,10 @@ class CourseController extends Controller
         $activities = $chapter->activities()->with('options')->get();
 
         return view('CoursePages.video', compact('chapter','videos', 'activities'));
+    }
+
+    public function checkAnswer($chapterId){
+        return $chapterId;
     }
 
 

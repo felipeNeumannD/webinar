@@ -58,8 +58,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('course_id');
-            $table->integer('watched_percentage');
-            $table->integer('activity_percentage');
+            $table->boolean('admin');
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
@@ -110,8 +109,41 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->foreign('activity_id')
-            ->references('id')->on('activities')
-            ->onDelete('cascade');
+                ->references('id')->on('activities')
+                ->onDelete('cascade');
+        });
+
+        Schema::create('video_inf', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_course_id');
+            $table->unsignedBigInteger(column: 'video_id');
+            $table->integer('video_percentage');
+            $table->timestamps();
+
+            $table->foreign('video_id')
+                ->references('id')->on('videos')
+                ->onDelete('cascade');
+
+            $table->foreign('user_course_id')
+                ->references('id')->on('user_course')
+                ->onDelete('cascade');
+        });
+
+
+        Schema::create('activity_inf', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_course_id');
+            $table->unsignedBigInteger('activity_id');
+            $table->integer('activity_percentage');
+            $table->timestamps();
+
+            $table->foreign('activity_id')
+                ->references('id')->on('activities')
+                ->onDelete('cascade');
+
+            $table->foreign('user_course_id')
+                ->references('id')->on('user_course')
+                ->onDelete('cascade');
         });
     }
 

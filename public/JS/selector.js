@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    
+
 
     document.getElementById('verButton').addEventListener('click', () => {
         if (selectedLineId) {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('deleteButton').addEventListener('click', () => {
         if (selectedLineId && confirm('Tem certeza que deseja deletar esta linha?')) {
-            document.getElementById('deleteForm').action = ref +`/${selectedLineId}`;
+            document.getElementById('deleteForm').action = ref + `/${selectedLineId}`;
             document.getElementById('deleteForm').submit();
         } else {
             alert('Por favor, selecione uma linha primeiro.');
