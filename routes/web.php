@@ -49,7 +49,8 @@ Route::prefix('course')->group(function () {
     Route::delete('/class/{id}', [CourseController::class, 'destroyClass'])->name('classes.destroy');
     Route::get('/{id}/class/content', [CourseController::class, 'exploreClass'])->name('class.explore');
     Route::post('/{id}/class/register', [CourseController::class, 'storeClass'])->name('class.store');
-    Route::post('/{id}/class/asnwers', [CourseController::class, 'checkAnswer'])->name('check-answers');
+    Route::post('/{id}/class/answers', [CourseController::class, 'checkAnswer'])->name('check-answers');
+    Route::post('/save-video-progress', [CourseController::class, 'saveProgress'])->name('video.progress');
 
     Route::get('/{id}/class/show_video', [CourseController::class, 'showVideos'])->name('video.show');
 

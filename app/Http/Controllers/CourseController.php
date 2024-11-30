@@ -10,6 +10,8 @@ use App\Models\VideoModel;
 use App\Models\Users;
 use App\Models\ActivityModel;
 use App\Models\OptionModel;
+use App\Models\ActivitiesInfoModel;
+use App\Models\VideoInfoModel;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -190,12 +192,148 @@ class CourseController extends Controller
         $videos = $chapter->videos;
         $activities = $chapter->activities()->with('options')->get();
 
-        return view('CoursePages.video', compact('chapter','videos', 'activities'));
+        return view('CoursePages.video', compact('chapter', 'videos', 'activities'));
     }
 
-    public function checkAnswer($chapterId){
-        return $chapterId;
+
+    public function checkAnswer(Request $request, $chapterId)
+    {
+        try {
+            $request->validate([
+                'activities' => 'required|array',
+                'activities.*' => 'integer|exists:options,id',
+                'correct_options' => 'required|array',
+                'correct_options.*' => 'integer|exists:options,id',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro de validação',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+
+        try {
+            $chapter = ChapterModel::findOrFail($chapterId);
+
+            $user = session('user');
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'Usuário não autenticado.'], 401);
+            }
+
+            $userId = $user instanceof Users ? $user->getKey() : 0;
+
+            $course_user = UserCourseModel::where('course_id', $chapter->course_id)
+                ->where('user_id', $userId)
+                ->first();
+
+            if (!$course_user) {
+                return response()->json(['success' => false, 'message' => 'Usuário não está inscrito no curso.'], 403);
+            }
+
+            $activities = $request->input('activities');
+            $correctOptions = $request->input('correct_options');
+            $correctAnswers = 0;
+            $totalActivities = count($activities);
+
+            foreach ($activities as $activityId => $userAnswer) {
+                $correctOptionId = $correctOptions[$activityId] ?? null;
+
+                if ($correctOptionId && intval($correctOptionId) === intval($userAnswer)) {
+                    $correctAnswers++;
+                }
+
+                ActivitiesInfoModel::updateOrCreate(
+                    [
+                        'user_course_id' => $course_user->id,
+                        'activity_id' => $activityId,
+                    ],
+                    [
+                        'activity_percentage' => ($correctOptionId && intval($correctOptionId) === intval($userAnswer)) ? 100 : 0,
+                    ]
+                );
+            }
+
+            return response()->json([
+                'success' => true,
+                'correctAnswers' => $correctAnswers,
+                'totalActivities' => $totalActivities,
+                'percentage' => ($totalActivities > 0) ? ($correctAnswers / $totalActivities) * 100 : 0,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocorreu um erro ao processar as respostas.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
+
+
+    public function saveVideoProgress(Request $request)
+    {
+        $request->validate([
+            'videoId' => 'required|integer|exists:videos,id',
+            'percentage' => 'required|integer|min:0|max:100',
+        ]);
+
+        try {
+            $user = session('user');
+            $userId = $user instanceof Users ? $user->getKey() : 0;
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuário não autenticado.',
+                ], 401);
+            }
+
+            // Obter o vídeo
+            $videoId = $request->input('videoId');
+            $percentage = $request->input('percentage');
+
+            // Obter o curso relacionado ao vídeo
+            $video = VideoModel::findOrFail($videoId);
+            $chapter = $video->chapter;
+            $course = $chapter->course;
+
+            // Verificar se o usuário está inscrito no curso
+            $courseUser = UserCourseModel::where('course_id', $course->id)
+                ->where('user_id', $user->getKey())
+                ->first();
+
+            if (!$courseUser) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuário não está inscrito no curso.',
+                ], 403);
+            }
+
+            // Atualizar ou criar o progresso do vídeo
+            VideoInfoModel::updateOrCreate(
+                [
+                    'user_course_id' => $courseUser->id,
+                    'video_id' => $videoId,
+                ],
+                [
+                    'video_percentage' => $percentage,
+                ]
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Progresso do vídeo salvo com sucesso.',
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Ocorreu um erro ao salvar o progresso do vídeo.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 
 }
