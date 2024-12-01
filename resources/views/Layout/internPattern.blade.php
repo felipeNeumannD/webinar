@@ -41,31 +41,34 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-            <a class="navbar-brand" href="#">Fruki Bebidas</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('mainView') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Seus Cursos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('lines') }}">Linhas de Produção</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('machines') }}">Máquinas Disponíveis</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
+    <!-- Exibe o menu somente se não estiver na página de login -->
+    @if (!request()->is('/') && !request()->is('user/login'))
+        <div class="container-fluid">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+                <a class="navbar-brand" href="#">Fruki Bebidas</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('mainView') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Seus Cursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('lines') }}">Linhas de Produção</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('machines') }}">Máquinas Disponíveis</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    @endif
 
     <div>
         @yield('content')

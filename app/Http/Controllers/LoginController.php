@@ -37,17 +37,27 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        $request->validate([
+            'Email' => 'required|email',
+            'Password' => 'required',
+        ]);
+    
         $user = Users::where('email', $request->Email)->first();
-
+    
         if ($user) {
             if (Hash::check($request->Password, $user->password)) {
                 Session::put('user', $user);
-                return view("mainView");
+    
+                return redirect()->route('mainView');
             } else {
-                return redirect("/");
+                return redirect("/")->withErrors([
+                    'Password' => 'Senha incorreta.',
+                ]);
             }
         } else {
-            return redirect("/");
+            return redirect("/")->withErrors([
+                'Email' => 'Usuário não encontrado.',
+            ]);
         }
     }
 
