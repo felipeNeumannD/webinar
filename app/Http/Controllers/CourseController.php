@@ -288,18 +288,26 @@ class CourseController extends Controller
                 ], 401);
             }
 
-            // Obter o vídeo
             $videoId = $request->input('videoId');
             $percentage = $request->input('percentage');
 
-            // Obter o curso relacionado ao vídeo
             $video = VideoModel::findOrFail($videoId);
+
+            // Use a relação `chapter` para acessar o capítulo do vídeo
             $chapter = $video->chapter;
+
+            // Use a relação `course` para acessar o curso do capítulo
             $course = $chapter->course;
 
-            // Verificar se o usuário está inscrito no curso
+            if (!$course) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Curso não encontrado.',
+                ], 404);
+            }
+
             $courseUser = UserCourseModel::where('course_id', $course->id)
-                ->where('user_id', $user->getKey())
+                ->where('user_id', $userId)
                 ->first();
 
             if (!$courseUser) {
@@ -309,7 +317,6 @@ class CourseController extends Controller
                 ], 403);
             }
 
-            // Atualizar ou criar o progresso do vídeo
             VideoInfoModel::updateOrCreate(
                 [
                     'user_course_id' => $courseUser->id,
@@ -333,7 +340,5 @@ class CourseController extends Controller
             ], 500);
         }
     }
-
-
 
 }

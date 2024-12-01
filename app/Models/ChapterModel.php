@@ -26,6 +26,11 @@ class ChapterModel extends Model
         'description'
     ];
 
+    public function course()
+{
+    return $this->belongsTo(CourseModel::class, 'course_id', 'id');
+}
+
     public function videos()
     {
         return $this->hasMany(VideoModel::class, 'capitulo_id');

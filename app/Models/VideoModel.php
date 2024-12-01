@@ -17,4 +17,10 @@ class VideoModel extends Model
         'description',
         'video',
     ];
+
+
+    public function chapter()
+    {
+        return $this->belongsTo(ChapterModel::class, 'capitulo_id', 'id');
+    }
 }
