@@ -16,4 +16,12 @@ class Users extends Model
     {
         return Users::where("email", $email)->first()->id;
     }
+
+
+    public static function getSessionId(){
+        $user = session('user');
+        $userId = ($user instanceof Users) ? $user->id : 0 ;
+        
+        return $userId;
+    }
 }

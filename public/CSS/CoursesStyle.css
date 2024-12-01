@@ -10,6 +10,10 @@
     white-space: normal;
 }
 
+.course_select_item .progress-bar-container {
+    position: absolute;
+}
+
 .name {
     text-align: center;
     font-size: 18px;

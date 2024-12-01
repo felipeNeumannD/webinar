@@ -8,22 +8,29 @@
     <div class="generic-grid">
         @forelse ($classes as $class)
             <div class="course_select_item" onclick="acessElement({{$class->id}})">
-                <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" style="background: none; border: none; cursor: pointer;">
-                        <img style="height: 36px; width: 36px" src="{{ asset('images/garbage.png') }}" alt="Excluir">
-                    </button>
-                </form>
-                <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('PUT')
-                    <button>
-                        <img style="height: 36px; width: 36px" src="{{ asset('images/pencil.png') }}">
-                    </button>
-                </form>
-                <div class="name">{{$class->name}}</div>
-                <div class="description">{{$class->description}}</div>
+                <div>
+                    <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" style="background: none; border: none; cursor: pointer;">
+                            <img style="height: 36px; width: 36px" src="{{ asset('images/garbage.png') }}" alt="Excluir">
+                        </button>
+                    </form>
+                    <form action="{{ route('classes.destroy', [$class->id]) }}" method="POST" style="display: inline;">
+                        @csrf
+                        @method('PUT')
+                        <button>
+                            <img style="height: 36px; width: 36px" src="{{ asset('images/pencil.png') }}">
+                        </button>
+                    </form>
+                </div>
+                <div style="height: 70%">
+                    <div class="name">{{$class->name}}</div>
+                    <div class="description">{{$class->description}}</div>
+                </div>
+                <div class>
+                    <x-progress-bar :percentage='$class->totalPercentages' min_percentage="$class->minPercentage" />
+                </div>
             </div>
         @empty
             <p>Nenhuma aula encontrada encontrada.</p>

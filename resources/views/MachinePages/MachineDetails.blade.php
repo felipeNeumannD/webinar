@@ -21,6 +21,7 @@
             @forelse ($machine->courses as $course)
                 <div class="select-item" data-id="{{ $course->id }}" onclick="toggleSelection(this)">
                     <h5>{{ $course->name }}</h5>
+                    <x-progress-bar :percentage="$course->coursePercentage" min_percentage="$course->min_vid_percentage" />
                 </div>
             @empty
                 <p class="text-center">Nenhuma máquina associada a esta linha</p>

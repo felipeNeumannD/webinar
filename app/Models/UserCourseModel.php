@@ -11,13 +11,21 @@ class UserCourseModel extends Model
 
     protected $table = 'user_course';
 
-    public function saveUserCourse( $user_id, $course_id, $admin ) {
+    public function saveUserCourse($user_id, $course_id, $admin)
+    {
 
         $this->user_id = $user_id;
         $this->course_id = $course_id;
         $this->admin = $admin;
 
-        $this-> save();
+        $this->save();
+    }
+
+    public static function getUserCourseId($userId, $courseId)
+    {
+        return self::where('user_id', $userId)
+            ->where('course_id', $courseId)
+            ->value('id');
     }
 
 

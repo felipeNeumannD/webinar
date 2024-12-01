@@ -36,6 +36,12 @@ class CourseController extends Controller
     public function showDescription($id)
     {
         $classes = ChapterModel::where('course_id', $id)->get();
+        $min_percentage = CourseModel::where('id', $id)->pluck('min_vid_percentage')->first();
+
+        foreach ($classes as $class) {
+            $class->totalPercentages = $class->calculateTotalPercentage();
+            $class->minPercentage = $min_percentage;
+        }
 
         return view('CoursePages.mainCoursePage', compact(['classes']));
 

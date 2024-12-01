@@ -68,6 +68,9 @@ class MachineController extends Controller
     {
         $machine = MachineModel::with('courses')->findOrFail($id);
 
+        foreach($machine->courses as $course){
+            $course->coursePercentage =  $course->calculateTotalPercentage();
+        }
         return view('MachinePages.MachineDetails', compact('machine'));
     }
 
@@ -97,5 +100,8 @@ class MachineController extends Controller
 
         return $this->returnInitialPage();
     }
+
+
+    
 
 }
