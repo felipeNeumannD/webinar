@@ -28,5 +28,16 @@ class UserCourseModel extends Model
             ->value('id');
     }
 
+    public static function getUserCourse($userId, $courseId)
+    {
+        return self::where('user_id', $userId)
+            ->where('course_id', $courseId)->get();
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(CourseModel::class, 'course_id');
+    }
+
 
 }

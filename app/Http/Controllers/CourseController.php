@@ -298,11 +298,7 @@ class CourseController extends Controller
             $percentage = $request->input('percentage');
 
             $video = VideoModel::findOrFail($videoId);
-
-            // Use a relação `chapter` para acessar o capítulo do vídeo
             $chapter = $video->chapter;
-
-            // Use a relação `course` para acessar o curso do capítulo
             $course = $chapter->course;
 
             if (!$course) {
@@ -346,5 +342,12 @@ class CourseController extends Controller
             ], 500);
         }
     }
+
+    public function getCurrentCourses()
+    {
+
+    }
+
+    
 
 }

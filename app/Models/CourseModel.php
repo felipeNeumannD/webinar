@@ -34,11 +34,15 @@ class CourseModel extends Model
         $total = 0;
 
         foreach($chapters as $chapter){
-            $total += ($chapter->calculateTotalPercentage() > $this->min_vid_percentage)? 1:0;
+            $total += $chapter->calculateTotalPercentage();
         }
 
-        return ($total * 100)/$chapters->count();
+        return ($chapters->count() > 0) ? $total/$chapters->count() : 0;
+    }
 
+    public function chapters()
+    {
+        return $this->hasMany(ChapterModel::class, 'course_id');
     }
 
 
