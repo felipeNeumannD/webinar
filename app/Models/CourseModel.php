@@ -37,7 +37,7 @@ class CourseModel extends Model
             $total += $chapter->calculateTotalPercentage();
         }
 
-        return ($chapters->count() > 0) ? $total/$chapters->count() : 0;
+        return ($chapters->count() > 0) ? ($total/$chapters->count()) : 0;
     }
 
     public function chapters()

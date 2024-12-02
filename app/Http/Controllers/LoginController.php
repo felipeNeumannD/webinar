@@ -41,13 +41,13 @@ class LoginController extends Controller
             'Email' => 'required|email',
             'Password' => 'required',
         ]);
-    
+
         $user = Users::where('email', $request->Email)->first();
-    
+
         if ($user) {
             if (Hash::check($request->Password, $user->password)) {
                 Session::put('user', $user);
-    
+
                 return redirect()->route('mainView');
             } else {
                 return redirect("/")->withErrors([
@@ -95,12 +95,26 @@ class LoginController extends Controller
     }
 
 
-    public function searchUser(Request $request)
+    public function oldSearchUser(Request $request)
     {
         $query = $request->get('query');
         $users = Users::where('name', 'like', "%{$query}%")->get(['name', 'email']);
 
         return response()->json($users);
     }
+
+    public function searchUser(Request $request)
+    {
+        $query = $request->get('query', '');
+
+        $users = Users::where('name', 'like', '%' . $query . '%')
+            ->select('id', 'name')
+            ->limit(10)
+            ->get();
+
+        return response()->json($users);
+    }
+
+
 
 }

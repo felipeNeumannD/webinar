@@ -16,6 +16,7 @@ Route::prefix('user')->group(function () {
     Route::put('/updateUser', [LoginController::class, 'updateUser']);
     Route::post('/cadastrando', [LoginController::class, 'createUser']);
     Route::get('/search-users', [LoginController::class, 'searchUser'])->name('searchUser');
+    Route::get('/old-search-users', [LoginController::class, 'oldSearchUser'])->name('old-search-users');
 });
 
 Route::prefix('line')->group(function () {
@@ -36,6 +37,7 @@ Route::prefix('machine')->group(function () {
     Route::get('/{id}/edit', [MachineController::class, 'edit'])->name('machines.edit');
     Route::put('/{id}', [MachineController::class, 'update'])->name('machines.update');
     Route::delete('/{id}', [MachineController::class, 'destroy'])->name('machines.destroy');
+    Route::post('/addUser', [MachineController::class, 'storeUser'])->name('assign.machine.store');
 });
 
 Route::prefix('course')->group(function () {

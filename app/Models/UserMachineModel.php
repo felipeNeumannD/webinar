@@ -11,10 +11,22 @@ class UserMachineModel extends Model
 
     protected $table = 'user_machine';
 
-    public function saveMachineUser ( $userId, $machineId, $isMachineAdmin ) {
-        $this->user_id = $userId;
-        $this->machine_id = $machineId;
-        $this->machineAdmin = $isMachineAdmin;
-        $this-> save();
+    public function saveMachineUser($userId, $machineId, $isAdmin = false)
+    {
+        return self::updateOrCreate(
+            [
+                'user_id' => $userId,
+                'machine_id' => $machineId,
+            ],
+            [
+                'machineAdmin' => $isAdmin,
+            ]
+        );
     }
+
+    protected $fillable = [
+        'user_id',
+        'machine_id',
+        'machineAdmin',
+    ];
 }

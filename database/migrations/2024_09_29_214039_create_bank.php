@@ -31,6 +31,7 @@ return new class extends Migration {
         });
 
         Schema::create('user_machine', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('machine_id');
             $table->boolean('machineAdmin');

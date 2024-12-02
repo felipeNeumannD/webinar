@@ -34,6 +34,7 @@
             </a>
         </div>
     </div>
+    <x-assign-user-form :machineModel="$machine" />
 </div>
 
 <script src="{{ asset('JS/gridSelector.js') }}"></script>

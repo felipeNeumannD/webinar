@@ -24,4 +24,11 @@ class Users extends Model
         
         return $userId;
     }
+
+    public static function isUserAdmin(){
+        $user = session('user');
+        $userNum = ($user instanceof Users) ? $user->Admin : 0;
+        return $userNum == 1;
+    }
+
 }

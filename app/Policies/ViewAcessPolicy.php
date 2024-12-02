@@ -8,18 +8,24 @@ use App\Models\CourseModel;
 
 class ViewAcessPolicy
 {
-    /**
-     * Create a new policy instance.
-     */
+
+
+    public CourseModel $courseModel;
+
     public function __construct( CourseModel $courseModel)
     {
+        $this->courseModel = $courseModel;
+    }
+
+    public function view(){
         $userId = Users::getSessionId();
-        $courseId = $courseModel->getKey();
+        $courseId = $this->courseModel->getKey();
 
         $userCourse = UserCourseModel::getUserCourse( $userId, $courseId );
 
-        $isAdmin = ($userCourse->admin == 1);
+        $isCourseAdmin = $userCourse->admin == 1;
 
-        
+        return ($isCourseAdmin || Users::isUserAdmin());
     }
+
 }

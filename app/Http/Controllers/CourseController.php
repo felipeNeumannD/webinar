@@ -171,8 +171,8 @@ class CourseController extends Controller
     public function destroyClass($id)
     {
         try {
+            
             $chapter = ChapterModel::findOrFail($id);
-
             $videos = VideoModel::where('capitulo_id', $id)->get();
 
             foreach ($videos as $video) {

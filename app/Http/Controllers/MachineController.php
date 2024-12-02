@@ -68,8 +68,8 @@ class MachineController extends Controller
     {
         $machine = MachineModel::with('courses')->findOrFail($id);
 
-        foreach($machine->courses as $course){
-            $course->coursePercentage =  $course->calculateTotalPercentage();
+        foreach ($machine->courses as $course) {
+            $course->coursePercentage = $course->calculateTotalPercentage();
         }
         return view('MachinePages.MachineDetails', compact('machine'));
     }
@@ -102,6 +102,28 @@ class MachineController extends Controller
     }
 
 
-    
+    public function storeUser(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    if (!Users::where('id', $value)->exists()) {
+                        $fail('O usuário selecionado não é válido.');
+                    }
+                },
+            ],
+            'machine_id' => 'required|integer|exists:machines,id',
+            'is_admin' => 'nullable|boolean',
+        ]);
+
+        $isAdmin = isset($validatedData['is_admin']) && $validatedData['is_admin'] === '1';
+
+        $machineUser = new UserMachineModel();
+        $machineUser->saveMachineUser($validatedData['user_id'], $validatedData['machine_id'], $isAdmin);
+
+    }
+
 
 }

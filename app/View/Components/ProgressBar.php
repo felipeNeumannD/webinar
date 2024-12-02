@@ -33,6 +33,6 @@ class ProgressBar extends Component
     }
 
     public function renderColor(){
-       $this->color =  ( $this->min_percentage < $this->percentage ) ? "bg-success" : ($this->min_percentage > $this->percentage)? "bg-danger" : "grey";
+       $this->color =  ( $this->min_percentage < $this->percentage ) ? "bg-success" : (($this->min_percentage > $this->percentage)? "bg-danger" : "grey");
     }
 }
