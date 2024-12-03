@@ -46,7 +46,7 @@
 </div>
 
 <script>
-    const searchUserUrl = "{{ route('searchUser') }}";
+    const searchUserUrl = "{{ route('old-search-users') }}";
 </script>
 
 <script>

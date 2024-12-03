@@ -15,7 +15,8 @@ class CourseModel extends Model
 
     public $minPercent;
 
-    public function saveCourse( $name, $machine_id, $description, $min_vid_percentage, $min_activity_percentage, $isActivity ) {
+    public function saveCourse($name, $machine_id, $description, $min_vid_percentage, $min_activity_percentage, $isActivity)
+    {
 
         $this->name = $name;
         $this->machine_id = $machine_id;
@@ -24,20 +25,21 @@ class CourseModel extends Model
         $this->min_vid_percentage = $min_vid_percentage;
         $this->min_activity_percentage = $min_activity_percentage;
 
-        $this-> save();
+        $this->save();
     }
 
 
-    public function calculateTotalPercentage(){
+    public function calculateTotalPercentage()
+    {
 
         $chapters = ChapterModel::where('course_id', $this->id)->get();
         $total = 0;
 
-        foreach($chapters as $chapter){
+        foreach ($chapters as $chapter) {
             $total += $chapter->calculateTotalPercentage();
         }
 
-        return ($chapters->count() > 0) ? ($total/$chapters->count()) : 0;
+        return ($chapters->count() > 0) ? ($total / $chapters->count()) : 0;
     }
 
     public function chapters()
@@ -46,7 +48,13 @@ class CourseModel extends Model
     }
 
 
-    public static function getVidPercent($id){
+    public static function getVidPercent($id)
+    {
         return self::where('id', $id)->select('min_vid_percentage')->get();
+    }
+
+    public function userCourses()
+    {
+        return $this->hasMany(UserCourseModel::class, 'course_id');
     }
 }

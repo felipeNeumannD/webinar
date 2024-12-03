@@ -37,13 +37,14 @@ class CourseController extends Controller
     {
         $classes = ChapterModel::where('course_id', $id)->get();
         $min_percentage = CourseModel::where('id', $id)->pluck('min_vid_percentage')->first();
+        $course = CourseModel::where('id', $id)->first();
 
         foreach ($classes as $class) {
             $class->totalPercentages = $class->calculateTotalPercentage();
             $class->minPercentage = $min_percentage;
         }
 
-        return view('CoursePages.mainCoursePage', compact(['classes']));
+        return view('CoursePages.mainCoursePage', compact(['classes', 'course']));
 
     }
 
@@ -62,7 +63,7 @@ class CourseController extends Controller
         $email = $request->selectedUserMail;
 
         $id = Users::getId($email);
-        $courseUser->saveUserCourse($id, $course->getKey(), false);
+        $courseUser->saveUserCourse($id, $course->getKey(), admin: true);
 
         return redirect('/main');
     }
@@ -171,7 +172,7 @@ class CourseController extends Controller
     public function destroyClass($id)
     {
         try {
-            
+
             $chapter = ChapterModel::findOrFail($id);
             $videos = VideoModel::where('capitulo_id', $id)->get();
 
@@ -343,11 +344,37 @@ class CourseController extends Controller
         }
     }
 
-    public function getCurrentCourses()
+    public function storeUser(Request $request)
     {
+        
 
+        $validatedData = $request->validate([
+            'user_id' => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    if (!Users::where('id', $value)->exists()) {
+                        $fail('O usuário selecionado não é válido.');
+                    }
+                },
+            ],
+            'course_id' => 'required|integer|exists:courses,id',
+            'is_admin' => 'nullable|boolean',
+        ]);
+
+        $isAdmin = filter_var($validatedData['is_admin'], FILTER_VALIDATE_BOOLEAN);
+
+        UserCourseModel::saveUserCourse(
+            $validatedData['user_id'],
+            $validatedData['course_id'],
+            $isAdmin
+        );
+
+        return redirect()->route('course.description', [$validatedData['course_id']])
+            ->with('success', 'Usuário associado com sucesso!');
     }
 
-    
+
+
 
 }

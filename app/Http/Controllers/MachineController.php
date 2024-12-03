@@ -7,6 +7,7 @@ use App\Models\MachineModel;
 use App\Models\LineModel;
 use Illuminate\Http\Request;
 use App\Models\Users;
+use App\Models\UserCourseModel;
 
 class MachineController extends Controller
 {
@@ -66,11 +67,20 @@ class MachineController extends Controller
 
     public function showDescription($id)
     {
-        $machine = MachineModel::with('courses')->findOrFail($id);
+        $userId = Users::getSessionId(); // Obtém o ID do usuário autenticado
+
+        $machine = MachineModel::with([
+            'courses' => function ($query) use ($userId) {
+                $query->whereHas('userCourses', function ($subQuery) use ($userId) {
+                    $subQuery->where('user_id', $userId);
+                });
+            }
+        ])->findOrFail($id);
 
         foreach ($machine->courses as $course) {
             $course->coursePercentage = $course->calculateTotalPercentage();
         }
+
         return view('MachinePages.MachineDetails', compact('machine'));
     }
 
@@ -122,6 +132,9 @@ class MachineController extends Controller
 
         $machineUser = new UserMachineModel();
         $machineUser->saveMachineUser($validatedData['user_id'], $validatedData['machine_id'], $isAdmin);
+        $id = $validatedData['machine_id'];
+
+        return redirect()->route('machine.description', [$id]);
 
     }
 

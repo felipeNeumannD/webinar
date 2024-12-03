@@ -11,14 +11,23 @@ class UserCourseModel extends Model
 
     protected $table = 'user_course';
 
-    public function saveUserCourse($user_id, $course_id, $admin)
+    protected $fillable = [
+        'user_id',
+        'course_id',
+        'admin',
+    ];
+
+    public static function saveUserCourse($user_id, $course_id, $admin)
     {
-
-        $this->user_id = $user_id;
-        $this->course_id = $course_id;
-        $this->admin = $admin;
-
-        $this->save();
+        return self::updateOrCreate(
+            [
+                'user_id' => $user_id,
+                'course_id' => $course_id,
+            ],
+            [
+                'admin' => $admin,
+            ]
+        );
     }
 
     public static function getUserCourseId($userId, $courseId)
@@ -39,5 +48,9 @@ class UserCourseModel extends Model
         return $this->belongsTo(CourseModel::class, 'course_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(Users::class, 'user_id');
+    }
 
 }

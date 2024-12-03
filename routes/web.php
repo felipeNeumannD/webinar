@@ -17,6 +17,7 @@ Route::prefix('user')->group(function () {
     Route::post('/cadastrando', [LoginController::class, 'createUser']);
     Route::get('/search-users', [LoginController::class, 'searchUser'])->name('searchUser');
     Route::get('/old-search-users', [LoginController::class, 'oldSearchUser'])->name('old-search-users');
+    Route::get('/{courseId}/course', [LoginController::class, 'getUsersByCourse'])->name('course-users');
 });
 
 Route::prefix('line')->group(function () {
@@ -46,6 +47,7 @@ Route::prefix('course')->group(function () {
     Route::get('/{id}/description', [CourseController::class, 'showDescription'])->name('course.description');
     Route::post('/courseRegister/{id}/register', [CourseController::class, 'store'])->name('course.store');
     Route::get('{id}/edit', [CourseController::class, 'edit'])->name('course.edit');
+    Route::post('/addCourseUser', [CourseController::class, 'storeUser'])->name('assign.course.store');
 
 
     Route::delete('/class/{id}', [CourseController::class, 'destroyClass'])->name('classes.destroy');

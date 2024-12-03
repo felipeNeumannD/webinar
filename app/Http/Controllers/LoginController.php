@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Users;
 use Illuminate\Support\Facades\Session;
+use App\Models\CourseModel;
+use App\Models\UserMachineModel;
 
 
 class LoginController extends Controller
@@ -110,6 +112,26 @@ class LoginController extends Controller
         $users = Users::where('name', 'like', '%' . $query . '%')
             ->select('id', 'name')
             ->limit(10)
+            ->get();
+
+        return response()->json($users);
+    }
+
+    public function getUsersByCourse(Request $request, $courseId)
+    {
+        $query = $request->get('query', '');
+        $course = CourseModel::find($courseId);
+
+        if (!$course) {
+            return response()->json(['message' => 'Curso não encontrado'], 404);
+        }
+
+        $machineId = $course->machine_id;
+        $userIds = UserMachineModel::where('machine_id', $machineId)->pluck('user_id');
+
+        $users = Users::whereIn('id', $userIds)
+            ->where('name', 'like', '%' . $query . '%')
+            ->select('id', 'name')
             ->get();
 
         return response()->json($users);
