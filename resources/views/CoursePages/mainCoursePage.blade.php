@@ -40,6 +40,10 @@
             <img src="{{ asset('images/mais.png') }}">
         </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
     <x-course-user-form :courseModel="$course" />
 </div>
 

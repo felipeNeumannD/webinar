@@ -29,4 +29,10 @@ class UserMachineModel extends Model
         'machine_id',
         'machineAdmin',
     ];
+
+    public static function getUserMachine($userId, $machineId)
+    {
+        return self::where('user_id', $userId)
+            ->where('machine_id', $machineId)->first();
+    }
 }

@@ -37,4 +37,11 @@ class LineModel extends Model
     {
         return $this->hasMany(MachineModel::class, 'line_id', 'id');
     }
+
+    public function getAcess(){
+        $userId = Users::getSessionId();
+        $id = $this->admin_id;
+
+        return (($id == $userId) || Users::isUserAdmin());
+    }
 }

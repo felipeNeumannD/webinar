@@ -5,12 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\UserCourseModel;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Users extends Model
+class Users extends Authenticatable
 {
     use HasFactory;
 
     protected $table = 'user';
+
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'CompanyId',
+        'Admin',
+    ];
+
+    protected $hidden = [
+        'password'
+    ];
 
 
     public static function getId($email)
@@ -26,6 +39,7 @@ class Users extends Model
 
         return $userId;
     }
+
 
     public static function isUserAdmin()
     {

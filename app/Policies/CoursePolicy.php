@@ -1,15 +1,14 @@
 <?php
 
 namespace App\Policies;
-
-use App\Models\UserCourseModel;
 use App\Models\Users;
 use App\Models\CourseModel;
+use App\Models\UserCourseModel;
 
-class ViewAcessPolicy
+use App\Models\User;
+
+class CoursePolicy
 {
-
-
     public CourseModel $courseModel;
 
     public function __construct( CourseModel $courseModel)
@@ -27,5 +26,4 @@ class ViewAcessPolicy
 
         return ($isCourseAdmin || Users::isUserAdmin());
     }
-
 }

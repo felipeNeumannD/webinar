@@ -8,6 +8,7 @@ use App\Models\Users;
 use Illuminate\Support\Facades\Session;
 use App\Models\CourseModel;
 use App\Models\UserMachineModel;
+use Illuminate\Support\Facades\Auth;
 
 
 class LoginController extends Controller
@@ -20,6 +21,28 @@ class LoginController extends Controller
     public function signUp()
     {
         return view("UserPages\cadastro");
+    }
+
+    public function loginAct(Request $request)
+    {
+        $request->validate([
+            'Email' => 'required|email',
+            'Password' => 'required',
+        ]);
+
+        $credentials = $request->only('Email', 'Password');
+
+        if (Auth::attempt(['email' => $credentials['Email'], 'password' => $credentials['Password']])) {
+            $request->session()->regenerate();
+            $user = Users::where('email', ['email' => $credentials['Email']])->first();
+            Session::put('user', $user);
+
+            return redirect()->route('mainView'); 
+        }
+
+        return back()->withErrors([
+            'Email' => 'As credenciais fornecidas estão incorretas.',
+        ]);
     }
 
     public function createUser(Request $request)
@@ -37,31 +60,6 @@ class LoginController extends Controller
         return redirect("/");
     }
 
-    public function login(Request $request)
-    {
-        $request->validate([
-            'Email' => 'required|email',
-            'Password' => 'required',
-        ]);
-
-        $user = Users::where('email', $request->Email)->first();
-
-        if ($user) {
-            if (Hash::check($request->Password, $user->password)) {
-                Session::put('user', $user);
-
-                return redirect()->route('mainView');
-            } else {
-                return redirect("/")->withErrors([
-                    'Password' => 'Senha incorreta.',
-                ]);
-            }
-        } else {
-            return redirect("/")->withErrors([
-                'Email' => 'Usuário não encontrado.',
-            ]);
-        }
-    }
 
     public function updateUser(Request $request)
     {

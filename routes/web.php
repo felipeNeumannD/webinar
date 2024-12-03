@@ -7,11 +7,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MainController;
 
-Route::get('/', [LoginController::class, 'index']);
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/main', [MainController::class, 'index'])->name('mainView');
+});
 
 Route::prefix('user')->group(function () {
     Route::get('/cadastro', [LoginController::class, 'signUp'])->name('cadastro.index');
-    Route::post('/login', [LoginController::class, 'login'])->name('initialView');
+    Route::post('/login', [LoginController::class, 'loginAct'])->name('initialView');
     Route::get('/changeUser', [LoginController::class, 'changeUser'])->name('changeUser');
     Route::put('/updateUser', [LoginController::class, 'updateUser']);
     Route::post('/cadastrando', [LoginController::class, 'createUser']);
@@ -63,9 +71,7 @@ Route::prefix('course')->group(function () {
 
 
 
-Route::prefix('main')->group(function () {
-    Route::get('/', [MainController::class, 'index'])->name('mainView');
-});
+
 
 
 

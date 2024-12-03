@@ -8,6 +8,7 @@ use App\Models\LineModel;
 use Illuminate\Http\Request;
 use App\Models\Users;
 use App\Models\UserCourseModel;
+use Illuminate\Support\Facades\Gate;
 
 class MachineController extends Controller
 {
@@ -33,20 +34,23 @@ class MachineController extends Controller
 
     public function store(Request $request)
     {
-
         $email = $request->selectedUserMail;
 
         if (!empty($email)) {
             $model = new LineModel();
-            $lineName = $model->lineId($request->lineList);
+            if ($model->getAcess()) {
+                $lineName = $model->lineId($request->lineList);
 
-            $userid = Users::getId($email);
+                $userid = Users::getId($email);
 
-            $machine = new MachineModel();
-            $machineUser = new UserMachineModel();
+                $machine = new MachineModel();
+                $machineUser = new UserMachineModel();
 
-            $machine->saveMachine($request->nome, $request->descricao, $lineName);
-            $machineUser->saveMachineUser($userid, $machine->getKey(), false);
+                $machine->saveMachine($request->nome, $request->descricao, $lineName);
+                $machineUser->saveMachineUser($userid, $machine->getKey(), false);
+            }
+            return redirect()->back()->with('error', 'Sem Acesso');
+
         }
         return $this->returnInitialPage();
     }
@@ -65,9 +69,21 @@ class MachineController extends Controller
         }
     }
 
+    public function getAcess($machineModel)
+    {
+        $userId = Users::getSessionId();
+        $machineId = $machineModel->id;
+
+        $userMachine = UserMachineModel::getUserMachine($userId, $machineId);
+
+        $isMachineAdmin = $userMachine->machineAdmin == 1;
+
+        return ($isMachineAdmin || Users::isUserAdmin());
+    }
+
     public function showDescription($id)
     {
-        $userId = Users::getSessionId(); // Obtém o ID do usuário autenticado
+        $userId = Users::getSessionId();
 
         $machine = MachineModel::with([
             'courses' => function ($query) use ($userId) {
@@ -87,28 +103,44 @@ class MachineController extends Controller
     public function edit($id)
     {
         $machine = MachineModel::findOrFail($id);
-        return view('MachinePages.editMachine', compact('machine'));
+        if ($this->getAcess($machine)) {
+            return view('MachinePages.editMachine', compact('machine'));
+        }
+        return redirect()->back()->with('error', 'Sem Acesso');
+
     }
 
     public function update(Request $request, $id)
     {
         $machine = MachineModel::findOrFail($id);
-        $machine->name = $request->input('name');
-        $machine->description = $request->input('description');
-        $machine->save();
 
-        return $this->returnInitialPage();
+        if ($this->getAcess($machine)) {
+
+            $machine->name = $request->input('name');
+            $machine->description = $request->input('description');
+            $machine->save();
+
+            return $this->returnInitialPage();
+        }
+
+        return redirect()->back()->with('error', 'Sem Acesso');
+
     }
 
     public function destroy($id)
     {
         $machine = MachineModel::findOrFail($id);
 
-        $machine->courses()->delete();
+        if ($this->getAcess($machine)) {
 
-        $machine->delete();
+            $machine->courses()->delete();
+            $machine->delete();
+            return $this->returnInitialPage();
+        }
 
-        return $this->returnInitialPage();
+        return redirect()->back()->with('error', 'Sem Acesso');
+
+
     }
 
 
@@ -130,12 +162,20 @@ class MachineController extends Controller
 
         $isAdmin = isset($validatedData['is_admin']) && $validatedData['is_admin'] === '1';
 
-        $machineUser = new UserMachineModel();
-        $machineUser->saveMachineUser($validatedData['user_id'], $validatedData['machine_id'], $isAdmin);
-        $id = $validatedData['machine_id'];
+        $machine = MachineModel::where('id', $validatedData['machine_id'])->first();
 
-        return redirect()->route('machine.description', [$id]);
+        if ($this->getAcess($machine)) {
+            $machineUser = new UserMachineModel();
+            $machineUser->saveMachineUser(
+                $validatedData['user_id'],
+                $validatedData['machine_id'],
+                $isAdmin
+            );
 
+            return redirect()->route('machine.description', [$validatedData['machine_id']]);
+        }
+
+        return redirect()->back()->with('error', 'Sem Acesso');
     }
 
 
